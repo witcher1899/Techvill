@@ -1,0 +1,162 @@
+plugins {
+    id 'java'
+    id("com.google.protobuf") version "0.10.0"
+    id 'org.openapi.generator' version '7.24.0'
+}
+
+
+group = 'ru.vkusvill'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven-central.storage-download.googleapis.com/maven2/")
+    }
+}
+
+
+openApiGenerate {
+    generatorName = 'java'
+    inputSpec = "$rootDir/src/test/resources/gatezilla.swagger.yaml"
+    skipValidateSpec = true
+    outputDir = layout.buildDirectory.dir("generated/openapi").get().asFile.path
+    apiPackage = 'ru.vkusvill.generated.api'
+    modelPackage = 'ru.vkusvill.generated.model'
+    invokerPackage = 'ru.vkusvill.generated'
+    configOptions = [
+            library             : 'rest-assured',
+            dateLibrary         : 'java8',
+            serializationLibrary: 'jackson',
+            useJakartaEe        : 'true',
+            openApiNullable     : 'false',
+            supportUrlQuery     : 'false'
+    ]
+}
+
+
+def openApiJavaDir = layout.buildDirectory.dir("generated/openapi/src/main/java")
+
+sourceSets {
+    test {
+        java.srcDir(openApiJavaDir)
+    }
+}
+
+compileTestJava.dependsOn tasks.openApiGenerate
+
+
+ext {
+    grpcVersion = "1.80.0"
+    protobufVersion = "3.24.3"
+    jacksonVersion = "2.18.2"
+    sqlserverVersion = "13.2.1.jre11"
+    postgresqlVersion = "42.7.7"
+    lombokVersion = "1.18.44"
+    temporalVersion = "1.25.0"
+    allureVersion = "2.29.1"
+    restassuredVersion = "5.5.0"
+    junitVersion = "5.10.0"
+    annotationVersion = "2.1.1"
+    vaultVersion = "6.2.0"
+    ownerVersion = "1.0.12"
+    jooqVersion = "3.19.22"
+}
+
+
+dependencies {
+    //JUnit5 и RestAssured
+    testImplementation platform("org.junit:junit-bom:$junitVersion")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation "io.rest-assured:rest-assured:$restassuredVersion"
+    testImplementation "jakarta.annotation:jakarta.annotation-api:$annotationVersion"
+
+    //gRPC
+    implementation platform("io.grpc:grpc-bom:$grpcVersion")
+    implementation "io.grpc:grpc-protobuf"
+    implementation "io.grpc:grpc-stub"
+    implementation "io.grpc:grpc-netty-shaded"
+    testImplementation "io.grpc:grpc-testing"
+    implementation "com.google.protobuf:protobuf-java:$protobufVersion"
+    implementation "com.google.protobuf:protobuf-java-util:$protobufVersion"
+
+    // Jackson (JSON)
+    implementation platform("com.fasterxml.jackson:jackson-bom:$jacksonVersion")
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+
+    //jdbc
+    implementation "com.microsoft.sqlserver:mssql-jdbc:$sqlserverVersion"
+    implementation "org.postgresql:postgresql:$postgresqlVersion"
+
+    //jooq
+    testImplementation "org.jooq:jooq:$jooqVersion"
+
+    //Lombok
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    //Temporal
+    testImplementation "io.temporal:temporal-sdk:$temporalVersion"
+
+    //Allure
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    testImplementation "io.qameta.allure:allure-junit5"
+
+    // Vault Java Driver
+    implementation "io.github.jopenlibs:vault-java-driver:$vaultVersion"
+
+    // Конфигурационные файлы (Owner)
+    implementation "org.aeonbits.owner:owner:$ownerVersion"
+}
+
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:$protobufVersion"
+    }
+
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
+        }
+    }
+
+
+    generateProtoTasks {
+        all().configureEach { task ->
+            task.plugins {
+                grpc { }
+            }
+        }
+    }
+}
+
+
+test {
+    useJUnitPlatform()
+    systemProperty 'allure.results.directory', "$buildDir/allure-results"
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+

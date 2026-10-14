@@ -1,0 +1,4393 @@
+swagger: "2.0"
+info:
+  title: gatezilla.proto
+  version: version not set
+tags:
+  - name: Gatezilla
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /api/v2/orders:
+    post:
+      summary: Создание заказа
+      operationId: Gatezilla_CreateOrderV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ordercreationCreateOrderV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ordercreationCreateOrderV1Request'
+      tags:
+        - Gatezilla
+  /api/v3/orders:
+    post:
+      summary: Создание заказа
+      operationId: Gatezilla_CreateOrderV3
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ordercreationCreateOrderV2Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ordercreationCreateOrderV3Request'
+      tags:
+        - Gatezilla
+  /v1/admin/orders:
+    get:
+      summary: Получение данных заказа для админки
+      description: '[ссылка на документацию](https://evawiki.int.vkusvill.ru/project/Document/DOC-047163#updateuz-2281-razrabotka-realizovat-funktsional-hp-for1c-spordersgetitems1)'
+      operationId: Gatezilla_GetAdminOrdersV1
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderGetAdminOrdersV1Response'
+      parameters:
+        - name: suborder_id
+          description: Номер заказа
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v1/orders/lite/details:
+    get:
+      summary: Аналитика по созданию lite ручек по детализации заказа
+      description: '[ссылка на документацию](https://evawiki.int.vkusvill.ru/project/Document/DOC-046200#uz-3354-analitika-po-sozdaniju-lite-ruchek-po-detalizatsii-zakaza)'
+      operationId: Gatezilla_GetOrderLiteDetailsV1
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderGetOrderLiteDetailsV1Response'
+      parameters:
+        - name: order_id
+          in: query
+          required: false
+          type: string
+          format: int64
+        - name: card_number
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v1/parcels/courier/info:
+    get:
+      summary: Данные о курьере для Корзины для МС Заказов
+      description: '[ссылка на документацию](https://evawiki.int.vkusvill.ru/project/Document/DOC-046730#ud-432-dannye-o-kur-ere-dlja-korziny-dlja-ms-zakazov-sinhronnoe-poluchenie)'
+      operationId: Gatezilla_GetCourierInfoV1
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/parcelsGetCourierInfoV1Response'
+      parameters:
+        - name: order_id
+          description: Номер/идентификатор заказа в составе генерального заказа
+          in: query
+          required: false
+          type: integer
+          format: int32
+      tags:
+        - Gatezilla
+  /v2/order/cancel:
+    put:
+      summary: Отмена заказов в маркетплейсах
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2orderscancel-endpoint-otmeny-zakazov-v-marketpleisax)'
+      operationId: Gatezilla_CancelOrderV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderCancelOrderV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderCancelOrderV1Request'
+      tags:
+        - Gatezilla
+  /v2/order/mplace/finalstatus:
+    put:
+      summary: Обновление статуса заказов в маркетплейсах
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/realizaciia/page/v2ordermplacefinalstatus)'
+      operationId: Gatezilla_MarketPlaceFinalStatusV1
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderMarketPlaceFinalStatusV1'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderMarketPlaceFinalStatusV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders:
+    get:
+      summary: Получение списка подзаказов по ген.заказу
+      description: нет ссылки
+      operationId: Gatezilla_GetOrderListV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderGetOrderListV1Response'
+      parameters:
+        - name: general_order_id
+          description: Идентификатор генерального заказа
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/orders/additional-delivery:
+    post:
+      summary: Довоз заказа
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/post-v2ordersadditional-delivery-endpoint-dovoza-zakaza)'
+      operationId: Gatezilla_AddDeliveryV2
+      responses:
+        "200":
+          description: OK
+          schema: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderAddDeliveryV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/admin/status:
+    put:
+      summary: Изменение статуса заказа через 1С
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersadminstatus-endpoint-izmeneniia-statusa-zakaza-cerez-1s)'
+      operationId: Gatezilla_AdminStatusV1
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderAdminStatusV1'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderAdminStatusV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/assembly-cells:
+    put:
+      summary: Добавлениe/изменение информации после окончания сборки
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersassembly-cells-endpoint-dobavleniiaizmeneniia-informacii-posle-okoncaniia-sborki)'
+      operationId: Gatezilla_CreateOrUpdateAssemblyCellsV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderCreateOrUpdateAssemblyCellsV2Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderCreateOrUpdateAssemblyCellsV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/assembly-comment:
+    put:
+      summary: Изменение/добавление комментария для сборки после создания заказа
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersassembly-comment-endpoint-izmeneniiadobavleniia-kommentariia-dlia-sborki-posle-sozdaniia-zakaza)'
+      operationId: Gatezilla_CreateOrUpdateAssemblyCommentV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderAssemblyCommentV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderAssemblyCommentV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/assembly/prepare:
+    post:
+      summary: 'UPDATEUZ-457: API-Gateway:v2/orders/assembly/prepare'
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/realizaciia/page/realizaciia-post-v2ordersassemblyprepare)'
+      operationId: Gatezilla_VerifyAssemblyV1
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/softcoreAssemblyPrepareV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/softcoreVerifyAssemblyV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/certificate:
+    post:
+      operationId: Gatezilla_CreateCertificateV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/msgCreateCertificateV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/msgCreateCertificateV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/collected:
+    get:
+      summary: 'UPDATEUZ-992: API-Gateway:v2/orders/collected'
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/realizaciia/page/updateuz-616-getv2orderscollected-razrabotat-endpoint-s-sobrannymi-tovarami-iz-uz-collected)'
+      operationId: Gatezilla_GetOrderCollectedV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/softcoreGetOrderCollectedV1Response'
+      parameters:
+        - name: suborder_id
+          description: ID заказа, в составе генерального заказа
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/orders/contact:
+    put:
+      summary: Изменение телефона покупателя
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2orderscontact-endpoint-izmeneniia-telefona-pokupatelia)'
+      operationId: Gatezilla_ChangePhone
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderChangePhone'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderChangePhoneRequest'
+      tags:
+        - Gatezilla
+  /v2/orders/customer:
+    get:
+      summary: 'UPDATEUZ-812: API-Gateway:v2/orders/customer'
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/analitika-po-zadacam-komandy-upravlenie-zakazami-i-dostavka/page/uz-1144-metod-poluceniia-parametrov-zakaza-dlia-plateznogo)'
+      operationId: Gatezilla_GetCustomerV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderGetCustomerV1Response'
+      parameters:
+        - name: order_id
+          description: Идентификатор заказа
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/orders/customer-cancel:
+    post:
+      summary: 'UPDATEUZ-957: API-Gateway:v2/orders/customer-cancel'
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/analitika-po-zadacam-komandy-upravlenie-zakazami-i-dostavka/page/uz-1667-pi-knopka-otmenit-v-statusax-gotovdostavka-cast-1-razrabotat-novuiu-rucku-dlia-otmeny-zakaza-pokupatelem)'
+      operationId: Gatezilla_OrderCancelByCustomerV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderOrderCancelByCustomerV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderOrderCancelByCustomerV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/delivery-address:
+    put:
+      summary: Изменение адреса доставки
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersdelivery-address-endpoint-izmeneniia-adresa-dostavki)'
+      operationId: Gatezilla_ChangeDeliveryAddress
+      responses:
+        "200":
+          description: OK
+          schema: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderChangeDeliveryAddressRequest'
+      tags:
+        - Gatezilla
+  /v2/orders/delivery-comment:
+    put:
+      summary: Изменение/создание комментария для курьера
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersdelivery-comment-endpoint-izmeneniiasozdaniia-kommentariia-dlia-kurera)'
+      operationId: Gatezilla_CreateOrUpdateDeliveryCommentV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderDeliveryCommentV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderDeliveryCommentV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/delivery-lock:
+    put:
+      summary: Блокировка доставки на определенное время
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersdelivery-lock-endpoint-blokirovki-dostavki-na-opredelennoe-vremia)'
+      operationId: Gatezilla_LockDeliveryV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderLockDeliveryV2'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderLockDeliveryV2Request'
+      tags:
+        - Gatezilla
+  /v2/orders/delivery-service:
+    put:
+      summary: Изменение службы доставки
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersdelivery-service-endpoint-izmeneniia-sluzby-dostavki)'
+      operationId: Gatezilla_ChangeDeliveryService
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderChangeDeliveryServiceResponse'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderChangeDeliveryServiceRequest'
+      tags:
+        - Gatezilla
+  /v2/orders/details:
+    get:
+      summary: Получение детализации заказа
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/get-v2ordersdetail-endpoint-poluceniia-detalizacii-zakaza)'
+      operationId: Gatezilla_OrderDetailsV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderOrderDetailsV1Response'
+      parameters:
+        - name: order_id
+          in: query
+          required: false
+          type: string
+        - name: card_number
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/orders/edit:
+    put:
+      summary: Изменения состава заказа в статусе Оформлен (изменение)
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/analitika-po-zadacam-komandy-upravlenie-zakazami-i-dostavka/page/uz-1520-izmeneniia-sostava-zakaza-v-statuse-oformlen-1-iteraciia-komanda-uz#bkmrk-%D0%A7%D0%B0%D1%81%D1%82%D1%8C-2.-%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-ht)'
+      operationId: Gatezilla_OrderEditV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/softcoreOrderEditV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/softcoreOrderEditV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/edit-commit:
+    post:
+      summary: Изменения состава заказа в статусе Оформлен (фиксация изменений)
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/analitika-po-zadacam-komandy-upravlenie-zakazami-i-dostavka/page/uz-1520-izmeneniia-sostava-zakaza-v-statuse-oformlen-1-iteraciia-komanda-uz#bkmrk-%D0%A7%D0%B0%D1%81%D1%82%D1%8C-2.-%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-ht)'
+      operationId: Gatezilla_OrderEditCommitV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/softcoreOrderEditCommitV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/softcoreOrderEditCommitV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/history:
+    get:
+      summary: Получение информации о заказах по номеру карты клиента и, опционально, по номеру заказа
+      description: нет документации
+      operationId: Gatezilla_GetHistInfoV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderGetHistInfoV1Response'
+      parameters:
+        - name: number
+          description: Номер карты
+          in: query
+          required: false
+          type: string
+        - name: order_id
+          description: Идентификатор заказа
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/orders/internal:
+    post:
+      summary: Создание внутренних заказов
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/post-v2ordersinternal-endpoint-sozdaniia-vnutrennix-zakazov)'
+      operationId: Gatezilla_CreateInternalOrder
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderCreateInternalOrderResponse'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderCreateInternalOrderRequest'
+      tags:
+        - Gatezilla
+  /v2/orders/mplace:
+    post:
+      summary: Создание заказов маркетплейсов
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/realizaciia/page/ms-sozdanie-zakazov-marketplesov)'
+      operationId: Gatezilla_CreateMarketplaceOrderV2
+      responses:
+        "200":
+          description: OK
+          schema: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/cartasticMarketplaceOrderV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/packages:
+    get:
+      summary: Получение данных о собранных пакетах в заказе
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/get-v2orderspackages-endpoint-poluceniia-dannyx-o-sobrannyx-paketax-v-zakaze)'
+      operationId: Gatezilla_GetPackages
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderGetPackagesResponse'
+      parameters:
+        - name: general_order_id
+          description: Идентификатор генерального заказа
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/orders/payment:
+    post:
+      summary: HTTP эндпоинт оплаты в рамках API GATEWAY
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/realizaciia/page/realizaciia-post-v2orderspayment)'
+      operationId: Gatezilla_PaymentV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/softcorePaymentV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/softcorePaymentV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/payway:
+    put:
+      summary: Изменение способа оплаты
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2orderspayway-endpoint-izmeneniia-sposoba-oplaty)'
+      operationId: Gatezilla_ChangePayWaySetV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/change_pay_way_setChangePayWaySetV2Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/change_pay_way_setChangePayWaySetV2Request'
+      tags:
+        - Gatezilla
+  /v2/orders/payway/check-change-possible:
+    get:
+      summary: Проверка возможности смены способа оплаты
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/get-v2orderspaywaycheck-change-possible-endpoint-proverki-vozmoznosti-smeny-sposoba-oplaty)'
+      operationId: Gatezilla_CheckChangePossible
+      responses: {}
+      parameters:
+        - name: general_order_id
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/orders/repeat-pay:
+    post:
+      summary: Вода. Метод повторной оплаты заказа
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/analitika-po-zadacam-komandy-upravlenie-zakazami-i-dostavka/page/uz-1245-voda-metod-povtornoi-oplaty-zakaza)'
+      operationId: Gatezilla_RepeatPayV2
+      responses:
+        "200":
+          description: OK
+          schema: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderRepeatPayV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/shop:
+    put:
+      summary: Смена торговой точки
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersshop-endpoint-smeny-torgovoi-tocki)'
+      operationId: Gatezilla_ChangeShopV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderChangeShopV1Request'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderChangeShopV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/slot:
+    put:
+      summary: Изменение слота заказа
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/put-v2ordersslot-endpoint-izmeneniia-slota-zakaza)'
+      operationId: Gatezilla_ChangeSlotV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderChangeSlotV2'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderChangeSlotV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/slot/change/check:
+    post:
+      summary: Проверки возможности смены слота заказа
+      description: '[ссылка на документацию](https://evawiki.int.vkusvill.ru/project/Document/DOC-042479#uz-2534-proverka-vozmozhnosti-smeny-slota-ms-zakazov-pol-zovatelja-v-mp-cherez-uz)'
+      operationId: Gatezilla_CheckChangeSlotV1
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderCheckChangeSlotV1'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderCheckChangeSlotV1Request'
+      tags:
+        - Gatezilla
+  /v2/orders/water:
+    post:
+      summary: Заказ воды
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/post-v2orderswater-endpoint-zakaza-vody)'
+      operationId: Gatezilla_OrderWaterV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/waterOrderWaterV2Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/waterOrderWaterV2Request'
+      tags:
+        - Gatezilla
+  /v2/orders/water-lines:
+    get:
+      summary: Получение заказов воды
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/dokumentaciia-cDL/page/get-v2orderswater-lines-endpoint-poluceniia-zakazov-vody)'
+      operationId: Gatezilla_GetWaterLines
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderWaterOrdersLinesV1Response'
+      parameters:
+        - name: number
+          description: Номер карты покупателя, обязательный
+          in: query
+          required: false
+          type: string
+        - name: order_id
+          description: ID подзаказа
+          in: query
+          required: false
+          type: string
+        - name: mp
+          description: Получать взаимодействия из мобильного приложения?
+          in: query
+          required: false
+          type: string
+        - name: source
+          description: Источник (сайт или мобильное приложение)
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/suborder:
+    get:
+      summary: Получение информации о под заказе
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/realizaciia/page/uz-976-polucenie-informacii-o-pod-zakaze-v2suborder)'
+      operationId: Gatezilla_GetSubOrderV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderGetSubOrderV1Response'
+      parameters:
+        - name: suborder_id
+          description: Идентификатор под заказа
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v2/water-lines:
+    post:
+      summary: Проверка состава заказа.
+      description: '[ссылка на документацию](https://bookstack.int.vkusvill.ru/books/analitika-po-zadacam-komandy-upravlenie-zakazami-i-dostavka/page/uz-278-vodaperedaca-tovarov-dostavleno-uz-i-dostavka#bkmrk-go)'
+      operationId: Gatezilla_CheckWaterLines
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderCheckWaterLinesResponse'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customerorderCheckWaterLinesRequest'
+      tags:
+        - Gatezilla
+  /v2/waterorders:
+    get:
+      summary: Нет описания
+      description: нет документации
+      operationId: Gatezilla_GetOrdersListV2
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderOrdersListV1Response'
+      parameters:
+        - name: number
+          description: Номер карты покупателя
+          in: query
+          required: false
+          type: string
+        - name: order_type
+          description: Тип заказа (справочник, вода - order_type=18)
+          in: query
+          required: false
+          type: string
+        - name: mp
+          description: Получать взаимодействия из мобильного приложения?
+          in: query
+          required: false
+          type: string
+        - name: source
+          description: Источник (сайт или мобильное приложение)
+          in: query
+          required: false
+          type: string
+        - name: cnt
+          description: Кол-во обработанных записей
+          in: query
+          required: false
+          type: string
+        - name: page
+          description: Страница
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+  /v3/orders/water:
+    post:
+      summary: Создание заказа воды в новом ядре (УЗ 2.0)
+      description: '[ссылка на документацию](https://evawiki.int.vkusvill.ru/project/Document/DOC-037897#updateuz-1661-razrabotka-novogo-vneshnego-kontrakta-dlja-sozdanija-zakaza-vody)'
+      operationId: Gatezilla_OrderWaterV3
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/hardcoreCreateWaterOrderV1Response'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/hardcoreCreateWaterOrderV1Request'
+      tags:
+        - Gatezilla
+  /v3/waterorders:
+    get:
+      summary: Список заказов воды за последние 30 дней.
+      description: '[ссылка на документацию](https://evawiki.int.vkusvill.ru/project/Document/DOC-055814#updateuz-2382-spisok-zakazov-vody-za-poslednie-30-dnej)'
+      operationId: Gatezilla_GetWaterOrdersListV1
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customerorderGetWaterOrdersListV1Response'
+      parameters:
+        - name: number
+          description: Номер карты покупателя
+          in: query
+          required: false
+          type: string
+      tags:
+        - Gatezilla
+definitions:
+  AddressReceiver:
+    type: object
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+  AmountsTips:
+    type: object
+    properties:
+      courier:
+        type: number
+        format: double
+      picker:
+        type: number
+        format: double
+  CreateCertificateV1RequestCountedOfferPrice:
+    type: object
+    properties:
+      total:
+        type: number
+        format: double
+        title: Сумма товара со скидками и спец. ценами
+      base_price:
+        type: number
+        format: double
+        title: Цена товара
+  CreateOrderV3RequestDeliveryParamsDeliveryTarget:
+    type: object
+    properties:
+      full_address:
+        type: string
+        description: Полный адрес дома. Required.
+      latitude:
+        type: number
+        format: double
+        description: Широта. Обязательно к заполнению.
+      longitude:
+        type: number
+        format: double
+        description: Долгота. Обязательно к заполнению.
+      country:
+        type: string
+        description: Страна. Optional.
+      province1:
+        type: string
+        description: Область. Optional.
+      province2:
+        type: string
+        description: Область. Optional.
+      area:
+        type: string
+        description: Городской Округ. Optional.
+      locality:
+        type: string
+        description: Местность. Optional.
+      district1:
+        type: string
+        description: Административный округ. Optional.
+      district2:
+        type: string
+        description: Район. Optional.
+      street:
+        type: string
+        description: Улица. Optional.
+      house:
+        type: string
+        description: Дом. Optional.
+      flat:
+        type: string
+        description: Квартира. Optional.
+      doorphone:
+        type: string
+        description: Домофон. Optional.
+      entrance:
+        type: string
+        description: Вход/подъезд. Optional.
+      floor:
+        type: string
+        description: Этаж. Optional.
+      location_input_type:
+        type: string
+        format: int64
+        description: Признак доставки без дома (принимает разные значения). Required.
+      is_private_home:
+        type: boolean
+        description: Флаг частный дом. Required.
+      customer_address_id:
+        type: string
+        format: int64
+        description: идентификатор адреса пользователя. Optional.
+      json_address:
+        type: string
+        description: сериализованный адрес. Optional.
+      address_comment:
+        type: string
+        description: Комментарий к доставке. Optional.
+  CreateOrderV3RequestItemDiscount:
+    type: object
+    properties:
+      type_id:
+        type: string
+        format: int64
+        description: ID типа скидки.
+      percentage:
+        type: string
+        format: int64
+        description: '% скидки на чек по акции Разнообразное Питание.'
+      sum:
+        type: number
+        format: double
+        description: Сумма скидки без скидки на чек.
+      value:
+        type: number
+        format: double
+        description: Значение скидки.
+  CreateOrderV3RequestItemPrice:
+    type: object
+    properties:
+      final_price:
+        type: number
+        format: double
+        description: Стоимость cо скидкой.
+      base_price:
+        type: number
+        format: double
+        description: Стоимость без скидки.
+      base_sum:
+        type: number
+        format: double
+        description: Сумма без скидки.
+  CreateOrderV3RequestLoyaltyCoupon:
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID купона.
+      sum:
+        type: number
+        format: double
+        description: Сумма купона.
+  CreateWaterOrderV1RequestDeliveryDetails:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        format: int64
+        title: Дата и время начала слота заказа, Unix timestamp
+      supply_until_date:
+        type: string
+        format: int64
+        title: Дата и время окончания слота заказа, Unix timestamp
+      target_address:
+        title: Информация об адресе доставки
+        allOf:
+          - $ref: '#/definitions/DeliveryDetailsTargetAddress'
+  DeliveryAddress:
+    type: object
+    properties:
+      order_address:
+        type: string
+      json_address:
+        type: string
+      latitude:
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
+      is_private_home:
+        type: boolean
+      doorphone:
+        type: string
+      entrance:
+        type: string
+      floor:
+        type: string
+      flat:
+        type: string
+      comment_courier:
+        type: string
+      receiver:
+        $ref: '#/definitions/AddressReceiver'
+      first_district:
+        type: string
+        description: Дополнительное поле для адреса доставки.
+      second_district:
+        type: string
+        title: Дополнительное поле для адреса доставки
+  DeliveryDetailsTargetAddress:
+    type: object
+    properties:
+      full_address:
+        type: string
+        title: Полный адрес
+      latitude:
+        type: number
+        format: double
+        title: Широта
+      longitude:
+        type: number
+        format: double
+        title: Долгота
+      flat:
+        type: string
+        title: Номер квартиры
+      doorphone:
+        type: string
+        title: Код домофона
+      entrance:
+        type: string
+        title: Подъезд
+      floor:
+        type: string
+        title: Этаж
+  DeliverySchedule:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        format: int64
+      supply_until_date:
+        type: string
+        format: int64
+  GetOrderListV1ResponseSubordersList:
+    type: object
+    properties:
+      order_id:
+        type: string
+        title: Идентификатор заказа
+      status_id:
+        type: string
+        title: Статус заказа
+      partner_id:
+        type: string
+        title: Идентификатор партнера
+  OrderDetailsV1ResponseCustomer:
+    type: object
+    properties:
+      email:
+        type: string
+      phone:
+        type: string
+  OrderDetailsV1ResponseDelivery:
+    type: object
+    properties:
+      get_type_id:
+        type: integer
+        format: int32
+      client_service_id:
+        type: integer
+        format: int32
+      schedule:
+        $ref: '#/definitions/DeliverySchedule'
+      address:
+        $ref: '#/definitions/DeliveryAddress'
+      location_input_type:
+        type: integer
+        format: int32
+  OrderEditCommitV1RequestProduct:
+    type: object
+    properties:
+      product_id:
+        type: string
+        title: Идентификатор товара
+      manufacturer_id:
+        type: string
+        title: Идентификатор производителя
+      quantity:
+        type: number
+        format: double
+        title: Количество товара
+      is_green_price:
+        type: boolean
+        title: Признак зеленного ценника
+      shop_number:
+        type: integer
+        format: int32
+        title: Торговая точка
+      base_sum:
+        type: number
+        format: double
+        title: Сумма товара с учетом скидок
+      amount:
+        type: integer
+        format: int32
+        title: Количество квантов (для весового товара) или штук
+      price:
+        type: number
+        format: double
+        title: Цена товара
+      quantity_ordered:
+        type: number
+        format: double
+        title: Количество в базовых единицах
+      amount_decimal:
+        type: number
+        format: double
+        title: Дробное количество товара
+      price_type:
+        type: integer
+        format: int32
+        title: Тип цены
+      discount_sum:
+        type: number
+        format: double
+        title: Сумма скидки
+      privilege_id:
+        type: integer
+        format: int32
+        title: Идентификатор привилегии
+      action_id:
+        type: integer
+        format: int32
+        title: Идентификатор действия
+      cashback:
+        type: number
+        format: double
+        title: Кешбек за товар
+      discount_value:
+        type: number
+        format: double
+        title: Процент скидки
+      privilege_used:
+        type: integer
+        format: int32
+        title: Идентификатор привелении
+      base_price:
+        type: number
+        format: double
+        title: Базовая цена
+  PaymentAmounts:
+    type: object
+    properties:
+      sum_order:
+        type: number
+        format: double
+      first_sum_order:
+        type: number
+        format: double
+      bonus_approved:
+        type: number
+        format: double
+      first_bonus_approved:
+        type: number
+        format: double
+      sum_coupon:
+        type: number
+        format: double
+      first_sum_coupon:
+        type: number
+        format: double
+      cashback:
+        type: number
+        format: double
+      sum_for_exchange:
+        type: number
+        format: double
+      delivery_sum:
+        type: number
+        format: double
+      tips:
+        $ref: '#/definitions/AmountsTips'
+      sber_spasibo:
+        type: number
+        format: double
+        description: Количество примененных бонусов сбер спасибо.
+      gift_card:
+        type: number
+        format: double
+        description: Количество списания с подарочной карты.
+  PaymentCard:
+    type: object
+    properties:
+      pan:
+        type: string
+      internal_id:
+        type: integer
+        format: int32
+  cartasticDeliveryAddress:
+    type: object
+    properties:
+      address:
+        type: string
+        title: Адрес
+      latitude:
+        type: number
+        format: double
+        title: Координаты доставки
+      longitude:
+        type: number
+        format: double
+        title: Координаты доставки
+      delivery_comment:
+        type: string
+        title: Комментарий к адресу
+      country:
+        type: string
+        title: Страна
+      province1:
+        type: string
+        title: Область
+      province2:
+        type: string
+        title: Область
+      area:
+        type: string
+        title: Район
+      locality:
+        type: string
+        title: Место
+      district1:
+        type: string
+        title: Район
+      district2:
+        type: string
+        title: Район
+      street:
+        type: string
+        title: Улица
+      house:
+        type: string
+        title: Дом
+      flat:
+        type: string
+        title: Квартира
+      doorphone:
+        type: string
+        title: Номер квартиры
+      entrance:
+        type: string
+        title: Вход
+      floor:
+        type: string
+        title: Этаж
+  cartasticDeliveryParams:
+    type: object
+    properties:
+      date_supply:
+        type: string
+        title: Левая граница окна доставки
+      date_supply_until:
+        type: string
+        title: Правая граница окна доставки
+      get_type_id:
+        type: integer
+        format: int32
+        title: Идентификатор службы доставки
+      shop_no:
+        type: number
+        format: double
+        title: Номер магазина
+      service_id:
+        type: integer
+        format: int32
+        title: Оказываемый сервис доставки
+      is_pickup:
+        type: boolean
+        title: Признак самовывоза
+  cartasticItem:
+    type: object
+    properties:
+      product_id:
+        type: number
+        format: double
+        title: Идентификатор товара
+      quantity:
+        type: number
+        format: double
+        title: Количество товара
+      sum:
+        type: number
+        format: double
+        title: Общая сумма за товар
+      price:
+        type: number
+        format: double
+        title: Цена за единицу товара
+      discount_type:
+        type: integer
+        format: int32
+        title: Тип скидки
+      discount_action_proc:
+        type: integer
+        format: int32
+        title: Действие по скидке
+      base_price:
+        type: number
+        format: double
+        title: Базовая цена товара
+      discount_value:
+        type: number
+        format: double
+        title: Сумма скидки
+  cartasticMarketplaceOrderV1Request:
+    type: object
+    properties:
+      order_info:
+        $ref: '#/definitions/cartasticOrderInfo'
+      delivery_params:
+        $ref: '#/definitions/cartasticDeliveryParams'
+      delivery_address:
+        $ref: '#/definitions/cartasticDeliveryAddress'
+      items:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/cartasticItem'
+  cartasticMarketplaceOrderV1Response:
+    type: object
+    properties:
+      result:
+        type: string
+        format: int64
+      suborder_id:
+        type: string
+        format: int64
+      message:
+        type: string
+  cartasticOrderInfo:
+    type: object
+    properties:
+      order_external_id:
+        type: string
+        title: Идентификатор заказа у партнера
+      number:
+        type: string
+        title: Номер карты лояльности
+      order_type_id:
+        type: integer
+        format: int32
+        title: Тип заказа
+      client_phone_from_mplace:
+        type: string
+        title: Номер телефона клиента от маркетплейса, для анонимной связи с клиентом
+      client_phone_from_loyalty_vv:
+        type: string
+        title: Номер телефона клиента для лояльности ВкусВилла
+      assembly_comment:
+        type: string
+        title: Комментарий сборщику
+      inn:
+        type: string
+        title: ИНН
+      source_id:
+        type: number
+        format: double
+        title: Идентификатор источника
+      max_overflow_sum:
+        type: number
+        format: double
+        title: Разрешенная сумма превышения
+      ya_delivery_sum:
+        type: number
+        format: double
+        title: Сумма доставки Яндекса
+  change_pay_way_setChangePayWaySetV2Request:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        title: Идентификатор заказа
+      pay_way:
+        type: integer
+        format: int32
+        title: Способ оплаты заказа
+      old_pay_type:
+        type: integer
+        format: int32
+        title: Текущий тип оплаты
+      new_pay_type:
+        type: integer
+        format: int32
+        title: Целевой тип оплаты
+      client_card_id:
+        type: integer
+        format: int32
+        title: Идентификатор платежной карты покупателя
+      sum_change:
+        type: integer
+        format: int32
+        title: Сумма, с которой нужна сдача
+      user_id:
+        type: string
+        title: Пользователь, который инициировал изменение
+      source:
+        type: string
+        title: Источник изменения
+      comment:
+        type: string
+        title: Комментарий
+  change_pay_way_setChangePayWaySetV2Response:
+    type: object
+    properties:
+      change_pay_way_set:
+        type: integer
+        format: int32
+        title: Флаг успешной смены оплаты
+      code_message:
+        type: integer
+        format: int32
+        title: Код-идентификатор для справочника сообщений (причины запрета смены способа оплаты)
+      message:
+        type: string
+        title: Текст сообщения
+  customerorderAddDeliveryV1Request:
+    type: object
+    properties:
+      order_id:
+        type: string
+        title: Идентификатор заказа (довоза)
+      packages:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderAddDeliveryV1RequestPackage'
+      delivery_params:
+        $ref: '#/definitions/customerorderAddDeliveryV1RequestDeliveryParams'
+      package_count:
+        type: integer
+        format: int32
+        title: Количество привезённых пакетов
+      pay_way:
+        type: integer
+        format: int32
+        title: Способ оплаты заказа довоза
+      add_order_reason:
+        type: string
+        title: Причина довоза
+      comment:
+        type: string
+        title: Комментарий к довозу для сборки
+      user:
+        type: string
+        title: ФИО пользователя, создавшего довоз
+      get_type_id:
+        type: string
+        title: Идентификатор службы доставки
+      bonus_approved:
+        type: number
+        format: double
+        title: Сумма бонусов
+      client_service_id:
+        type: string
+        title: Идентификатор сервиса
+      order_lines:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderAddDeliveryV1RequestOrderLine'
+  customerorderAddDeliveryV1RequestDeliveryParams:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        format: int64
+        title: Левая граница слота (окна доставки), Unix timestamp
+      supply_until_date:
+        type: string
+        format: int64
+        title: Правая граница слота (окна доставки), Unix timestamp
+      comment:
+        type: string
+        title: Комментарий к довозу для курьера
+  customerorderAddDeliveryV1RequestDiscount:
+    type: object
+    properties:
+      type_id:
+        type: string
+        title: Тип скидки
+      percentage:
+        type: integer
+        format: int32
+        title: Процент скидки по акции
+      sum:
+        type: number
+        format: double
+        title: Сумма скидки
+      value:
+        type: number
+        format: double
+        title: Значение скидки
+  customerorderAddDeliveryV1RequestOrderLine:
+    type: object
+    properties:
+      product_id:
+        type: string
+        title: Идентификатор товара
+      manufacturer_id:
+        type: string
+        title: Идентификатор производителя
+      is_green_price:
+        type: boolean
+        title: Флаг зелёного товара
+      contract_type_id:
+        type: string
+        title: Признак типа продажи
+      partner_shopno:
+        type: integer
+        format: int32
+        title: Магазина партнёра
+      quantity_ordered:
+        type: number
+        format: double
+        title: Количество в базовых единицах (кг/шт)
+      quantity:
+        type: number
+        format: double
+        title: Количество
+      amount_ordered:
+        type: integer
+        format: int32
+        title: Количество квантов (для весового), штук для штучного
+      amount:
+        type: integer
+        format: int32
+        title: Количество квантов (для весового), штук для штучного
+      prod_since_date:
+        type: string
+        format: int64
+        title: Дата производства минимальная
+      amount_decimal:
+        type: number
+        format: double
+        title: Количество дробное
+      sum_ordered:
+        type: number
+        format: double
+        title: Сумма в ценах прайса
+      order_num:
+        type: integer
+        format: int32
+        title: Номер заказа
+      warehouse:
+        type: integer
+        format: int32
+        title: Торговая точка остатков
+      discount:
+        $ref: '#/definitions/customerorderAddDeliveryV1RequestDiscount'
+      price:
+        $ref: '#/definitions/customerorderAddDeliveryV1RequestPrice'
+  customerorderAddDeliveryV1RequestPackage:
+    type: object
+    properties:
+      order_id:
+        type: string
+        title: Идентификатор заказа
+      package_id:
+        type: string
+        title: Идентификатор пакета
+      cell_id:
+        type: string
+        title: Идентификатор ячейки
+  customerorderAddDeliveryV1RequestPrice:
+    type: object
+    properties:
+      final_price:
+        type: number
+        format: double
+        title: Цена
+      base_sum:
+        type: number
+        format: double
+        title: Сумма товара
+      base_price:
+        type: number
+        format: double
+        title: Базовая цена
+  customerorderAddDeliveryV1Response:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+  customerorderAdminStatusV1Request:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        title: Идентификатор гензаказа
+      suborder_id:
+        type: string
+        title: Идентификатор подзаказа
+      status_id:
+        type: integer
+        format: int32
+        title: Статус заказа
+      user_name:
+        type: string
+        title: Инициатор отмены
+      shop_no:
+        type: string
+        title: Идентификатор магазина
+      comment:
+        type: string
+        title: Комментарий к отмене
+  customerorderAssemblyCommentV1Request:
+    type: object
+    properties:
+      order_id:
+        type: string
+        format: int64
+        title: Идентификатор заказа
+      comment:
+        type: string
+        title: Комментарий для сборки, который необходимо добавить/изменить
+  customerorderAssemblyCommentV1Response:
+    type: object
+    properties:
+      is_change:
+        type: boolean
+        title: Данное поле содержит ответ на вопрос, изменен ли комментарий
+      message:
+        type: string
+        title: Причина по которой комментарий не изменен
+  customerorderCancelOrderV1Request:
+    type: object
+    properties:
+      order_id:
+        type: string
+        format: int64
+      user_name:
+        type: string
+      comment:
+        type: string
+      expected_type:
+        $ref: '#/definitions/customerorderOrderTypeCancel'
+  customerorderCancelOrderV1Response:
+    type: object
+  customerorderChangeDeliveryAddressRequest:
+    type: object
+    properties:
+      suborder_id:
+        type: string
+        title: Номер/идентификатор заказа в составе генерального заказа id_order
+      user:
+        type: string
+        title: Пользователь
+      shop_number:
+        type: string
+        title: Номер магазина
+      get_type_id:
+        type: string
+        title: Служба доставки заказа
+      delivery_date:
+        type: string
+        format: int64
+        title: Дата доставки
+      address:
+        type: string
+        title: Адрес
+      comment:
+        type: string
+        title: Комментарий
+      pay_type:
+        type: string
+        title: Тип оплаты
+      is_forced_change:
+        type: boolean
+        title: Изменения без проверок
+      area:
+        type: string
+        title: Район
+      locality:
+        type: string
+        title: Местность
+      district1:
+        type: string
+        title: Район
+      district2:
+        type: string
+        title: Район
+      street:
+        type: string
+        title: Улица
+      house:
+        type: string
+        title: Дом
+      flat:
+        type: string
+        title: Квартира
+      doorphone:
+        type: string
+        title: Номер квартиры
+      entrance:
+        type: string
+        title: Вход
+      floor:
+        type: string
+        title: Этаж
+      address_comment:
+        type: string
+        title: Комментарий к адресу
+      latitude:
+        type: number
+        format: double
+        title: Широта места доставки заказа
+      longitude:
+        type: number
+        format: double
+        title: Долгота места доставки заказа
+      is_shop_change_check:
+        type: boolean
+        title: Признак проверки магазина
+      courier_id:
+        type: string
+        title: Идентификатор курьера
+      owner_id:
+        type: string
+        title: Идентификатор владельца
+  customerorderChangeDeliveryServiceRequest:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        title: Идентификатор генерального заказа
+      get_type_id:
+        type: string
+        title: Идентификатор службы доставки
+      user:
+        type: string
+        title: ФИО пользователя
+      comment:
+        type: string
+        title: Комментарий
+      is_ignore_thermolability:
+        type: boolean
+        title: Не учитывать признак термолабильности
+  customerorderChangeDeliveryServiceResponse:
+    type: object
+    properties:
+      message:
+        type: string
+  customerorderChangePhoneRequest:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        title: Идентификатор генерального заказа
+      phone:
+        type: string
+        title: Телефон
+      is_another_person_phone:
+        type: boolean
+        title: 'Флаг типа телефона: false - телефон заказчика, true - телефон получателя'
+      user:
+        type: string
+        title: Пользователь
+      comment:
+        type: string
+        title: Комментарий
+  customerorderChangeShopV1Request:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        title: Идентификатор генерального заказа
+      shopno:
+        type: string
+        title: Номер торговой точки
+  customerorderChangeSlotV1Request:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+      user_name:
+        type: string
+      comment:
+        type: string
+      delivery_params:
+        $ref: '#/definitions/customerorderChangeSlotV1RequestDeliveryParams'
+  customerorderChangeSlotV1RequestDeliveryParams:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        format: int64
+      supply_until_date:
+        type: string
+        format: int64
+  customerorderCheckChangeSlotV1Request:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        format: int64
+      delivery_params:
+        $ref: '#/definitions/customerorderDeliveryParams'
+  customerorderCheckWaterLinesRequest:
+    type: object
+    properties:
+      order_id:
+        type: string
+        title: Идентификатор заказа
+      shopno:
+        type: integer
+        format: int32
+        title: TT
+      order_lines:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderCheckWaterLinesRequestOrderLine'
+        title: Товары
+  customerorderCheckWaterLinesRequestOrderLine:
+    type: object
+    properties:
+      product_id:
+        type: string
+        title: Идентификатор товара
+      barcode:
+        type: string
+        title: Штрихкод
+      kontr_id:
+        type: integer
+        format: int32
+        title: ИД контрагента
+      quantity:
+        type: string
+        format: int64
+        title: Количество
+      marking_data_matrix:
+        type: string
+        title: Маркировка ЧЗ
+  customerorderCheckWaterLinesResponse:
+    type: object
+    properties:
+      result:
+        type: integer
+        format: int32
+      message:
+        type: string
+  customerorderCreateInternalOrderRequest:
+    type: object
+    properties:
+      card_number:
+        type: string
+        title: Номер карты покупателя
+      phone:
+        type: string
+        title: Номер телефона клиента
+      assembly_comment:
+        type: string
+        title: Комментарий к сборщику
+      source_shopno:
+        type: integer
+        format: int32
+        title: Магазин, с которого будет отгрузка
+      target_shopno:
+        type: integer
+        format: int32
+        title: Магазин, куда будет отгрузка
+      is_replace_null_prices:
+        type: boolean
+        title: Флаг отсутствия цены
+      order_type:
+        type: integer
+        format: int32
+        title: Тип заказа
+      creation_source:
+        type: integer
+        format: int32
+        title: Источник создания заказа
+      client_service_id:
+        type: integer
+        format: int32
+        title: Тип доставки
+      pay_way:
+        type: integer
+        format: int32
+        title: Тип оплаты
+      delivery_params:
+        $ref: '#/definitions/customerorderCreateInternalOrderRequestDeliveryParams'
+      order_lines:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderCreateInternalOrderRequestOrderLine'
+        title: Линии заказа
+      assembly_tech_comment:
+        type: string
+        title: Технический комментарий для сборки
+    title: Запрос на создание внутреннего заказа
+  customerorderCreateInternalOrderRequestDeliveryParams:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        format: int64
+        title: Дата и время начала слота заказа, Unix timestamp
+      supply_until_date:
+        type: string
+        format: int64
+        title: Дата и время окончания слота заказа, Unix timestamp
+      comment:
+        type: string
+        title: Комментарий курьеру
+      courier_tech_comment:
+        type: string
+        title: Технический комментарий для доставки
+  customerorderCreateInternalOrderRequestOrderLine:
+    type: object
+    properties:
+      product_id:
+        type: integer
+        format: int32
+        title: Идентификатор товара
+      quantity:
+        type: number
+        format: double
+        title: Количество товара
+      manufacturer_id:
+        type: integer
+        format: int32
+        title: Идентификатор производителя
+      amount:
+        type: integer
+        format: int32
+        title: Количество квантов/штук
+      is_green_price:
+        type: boolean
+        title: Признак зеленого ценника
+      contract_type_id:
+        type: integer
+        format: int32
+        title: Признак типа продажи
+      partner_shopno:
+        type: integer
+        format: int32
+        title: Идентификатор магазина партнера
+      quantity_ordered:
+        type: number
+        format: double
+        title: Количество в базовых единицах
+      amount_ordered:
+        type: integer
+        format: int32
+        title: Количество квантов/штук
+      amount_decimal:
+        type: number
+        format: double
+        title: Количество товара дробное
+      sum_ordered:
+        type: number
+        format: double
+        title: Сумма в ценах прайса
+      order_num:
+        type: integer
+        format: int32
+        title: Номер заказа
+      warehouse:
+        type: integer
+        format: int32
+        title: Торговая точка
+      prod_since_date:
+        type: string
+        format: int64
+        title: Дата производства минимальная, unix timestamp
+      discount:
+        $ref: '#/definitions/customerorderCreateInternalOrderRequestOrderLineDiscount'
+      price:
+        $ref: '#/definitions/customerorderCreateInternalOrderRequestOrderLinePrice'
+  customerorderCreateInternalOrderRequestOrderLineDiscount:
+    type: object
+    properties:
+      type_id:
+        type: integer
+        format: int32
+        title: ID типа скидки
+      percentage:
+        type: integer
+        format: int32
+        title: Процент скидки на чек
+      sum:
+        type: number
+        format: double
+        title: Сумма скидки без скидки на чек
+      value:
+        type: number
+        format: double
+        title: Значение скидки
+  customerorderCreateInternalOrderRequestOrderLinePrice:
+    type: object
+    properties:
+      final_price:
+        type: number
+        format: double
+        title: Цена со скидками и спец. ценами
+      base_price:
+        type: number
+        format: double
+        title: Базовая цена
+      base_sum:
+        type: number
+        format: double
+        title: Сумма товара
+  customerorderCreateInternalOrderResponse:
+    type: object
+    properties:
+      order_id:
+        type: integer
+        format: int32
+        title: Номер созданного заказа
+    title: Ответ на запрос создания заказа
+  customerorderCreateOrUpdateAssemblyCellsV1Request:
+    type: object
+    properties:
+      packages:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderCreateOrUpdateAssemblyCellsV1RequestPackage'
+  customerorderCreateOrUpdateAssemblyCellsV1RequestPackage:
+    type: object
+    properties:
+      order_id:
+        type: string
+        format: int64
+      package_id:
+        type: string
+      cell_id:
+        type: string
+      sticker_id:
+        type: string
+        format: int64
+  customerorderCreateOrUpdateAssemblyCellsV1Response:
+    type: object
+  customerorderDeliveryCommentV1Request:
+    type: object
+    properties:
+      order_id:
+        type: string
+        format: int64
+        title: Идентификатор заказа
+      delivery_comment:
+        type: string
+        title: Комментарий для курьера, который необходимо добавить/изменить
+  customerorderDeliveryCommentV1Response:
+    type: object
+    properties:
+      is_change:
+        type: boolean
+        title: Данное поле содержит ответ на вопрос, изменен ли комментарий
+      message:
+        type: string
+        title: Причина по которой комментарий не изменен
+  customerorderDeliveryParams:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        format: int64
+      supply_until_date:
+        type: string
+        format: int64
+  customerorderGetAdminOrdersV1Response:
+    type: object
+    properties:
+      suborder_id:
+        type: string
+        title: Уникальный номер заказа
+      shop_number:
+        type: string
+        format: int64
+        title: Номер магазина
+      phone:
+        type: string
+        title: Телефон
+      date_order:
+        type: string
+        format: int64
+        title: Дата создания заказа (Unix timestamp)
+      assembly_comment:
+        type: string
+        title: Комментарий к заказу
+      ordered_items:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderGetAdminOrdersV1ResponseOrderedItem'
+        title: Товары заказа
+  customerorderGetAdminOrdersV1ResponseOrderedItem:
+    type: object
+    properties:
+      product_id:
+        type: string
+        title: Идентификатор товара
+      quantity:
+        type: number
+        format: double
+        title: Количество
+      price:
+        type: number
+        format: double
+        title: Цена
+      sum_order:
+        type: number
+        format: double
+        title: Сумма
+      is_green_price:
+        type: boolean
+        title: Признак зеленого ценника
+  customerorderGetCustomerV1Response:
+    type: object
+    properties:
+      card_id:
+        type: string
+        title: Идентификатор карты в списке привязок
+      phone:
+        type: string
+        title: Номер телефона
+      email:
+        type: string
+        title: Электронная почта
+      masked_card:
+        type: string
+        title: Маскировочный номер карты
+  customerorderGetHistInfoV1Response:
+    type: object
+    properties:
+      orders:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderGetHistInfoV1ResponseItem'
+  customerorderGetHistInfoV1ResponseItem:
+    type: object
+    properties:
+      order_id:
+        type: string
+        title: Идентификатор заказа
+      status_id:
+        type: string
+        title: Статус заказа
+      date_delivered:
+        type: string
+        format: int64
+        title: Дата доставки (Unix timestamp)
+      pickup:
+        type: boolean
+        title: Признак самовывоза
+      gettype:
+        type: string
+        title: Тип доставки
+      analog_ziz:
+        type: boolean
+        title: Признак службы доставки ЗИЗ
+      sum_order:
+        type: number
+        format: double
+        title: Сумма заказа после оформления
+      cardrn:
+        type: string
+        title: Внутренний идентификатор банковской карты клиента
+      sum_closed:
+        type: number
+        format: double
+        title: Сумма заказа после сборки
+  customerorderGetOrderListV1Response:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        format: int64
+        title: Идентификатор генерального заказа
+      suborders_list:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/GetOrderListV1ResponseSubordersList'
+        title: Массив объектов, содержащих информацию о заказах
+  customerorderGetOrderLiteDetailsV1Response:
+    type: object
+    properties:
+      id_order:
+        type: string
+      number:
+        type: string
+      date_order:
+        type: string
+        format: int64
+      id_status:
+        type: string
+      is_paid:
+        type: boolean
+      pickup:
+        type: boolean
+      shopno:
+        type: string
+        format: int64
+      id_cart:
+        type: string
+        format: int64
+      id_general:
+        type: string
+      id_partner_type:
+        type: string
+        format: int64
+      card_rn:
+        type: string
+      gettype:
+        type: string
+        format: int64
+      id_service:
+        type: string
+        format: int64
+      date_supply:
+        type: string
+        format: int64
+      date_supply_until:
+        type: string
+        format: int64
+      latitude:
+        type: string
+      longitude:
+        type: string
+  customerorderGetPackagesResponse:
+    type: object
+    properties:
+      orders:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderGetPackagesResponseOrder'
+        title: Список заказов
+  customerorderGetPackagesResponseOrder:
+    type: object
+    properties:
+      order_id:
+        type: string
+        title: Идентификатор заказа
+      packages:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderGetPackagesResponsePackage'
+        title: Список пакетов для заказа
+  customerorderGetPackagesResponsePackage:
+    type: object
+    properties:
+      package_id:
+        type: string
+        title: Идентификатор пакета
+      cell_id:
+        type: string
+        title: Идентификатор ячейки
+  customerorderGetSubOrderV1Response:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+      suborder_id:
+        type: string
+      status_id:
+        type: integer
+        format: int32
+      shop_number:
+        type: integer
+        format: int32
+  customerorderGetWaterOrdersListV1Response:
+    type: object
+    properties:
+      orders:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderOrdersWaterResponse'
+        title: Массив получаемых ордеров
+  customerorderLockDeliveryV1Response:
+    type: object
+    properties:
+      message:
+        type: string
+  customerorderLockDeliveryV2Request:
+    type: object
+    properties:
+      order_id:
+        type: integer
+        format: int32
+        title: Номер заказа
+      delivery_locked_before:
+        type: string
+        format: int64
+        title: Время смещения заказа
+      new_date_supply:
+        type: string
+        format: int64
+        title: Новое время левой границы слота
+      new_date_supply_until:
+        type: string
+        format: int64
+        title: Новое время правой границы слота
+  customerorderMarketPlaceFinalStatusV1Request:
+    type: object
+    properties:
+      order_id:
+        type: string
+        title: Идентификатор заказа
+  customerorderOrderCancelByCustomerV1Request:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        title: Идентификатор генерального заказа
+      source:
+        title: Источник на возврат средств
+        allOf:
+          - $ref: '#/definitions/msgSources'
+      refund_type:
+        title: Способ возврата средств
+        allOf:
+          - $ref: '#/definitions/msgRefundTypes'
+      user_name:
+        type: string
+        title: Инициатор отмены
+  customerorderOrderCancelByCustomerV1Response:
+    type: object
+  customerorderOrderDetailsV1Response:
+    type: object
+    properties:
+      order:
+        $ref: '#/definitions/customerorderOrderDetailsV1ResponseOrder'
+      customer:
+        $ref: '#/definitions/OrderDetailsV1ResponseCustomer'
+      payment:
+        $ref: '#/definitions/customerorderOrderDetailsV1ResponsePayment'
+      delivery:
+        $ref: '#/definitions/OrderDetailsV1ResponseDelivery'
+      order_lines:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderOrderDetailsV1ResponseOrderLine'
+      order_lines_actual:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderOrderDetailsV1ResponseOrderLine'
+      loyalty_card_number_properties:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderOrderDetailsV1ResponseLoyaltyCardNumberProperty'
+        description: Настройки корзины.
+  customerorderOrderDetailsV1ResponseLoyaltyCardNumberProperty:
+    type: object
+    properties:
+      property:
+        type: string
+        description: Настройка корзины.
+      parent_id:
+        type: integer
+        format: int32
+        description: Идентификатор родительской настройки.
+      value:
+        type: integer
+        format: int32
+        description: Значение настройки корзины.
+    description: Настройки корзины.
+  customerorderOrderDetailsV1ResponseOrder:
+    type: object
+    properties:
+      id:
+        type: string
+      date:
+        type: string
+        format: int64
+      type:
+        type: string
+      status:
+        type: string
+      is_paid:
+        type: boolean
+      is_pickup:
+        type: boolean
+      creation_source:
+        type: string
+      partner_id:
+        type: integer
+        format: int32
+      partner_type_id:
+        type: integer
+        format: int32
+      shop_number:
+        type: integer
+        format: int32
+      seller_id:
+        type: integer
+        format: int32
+      auth_code:
+        type: integer
+        format: int32
+      weight:
+        type: number
+        format: double
+      cutlery:
+        type: integer
+        format: int32
+      order_text_id:
+        type: string
+      comment_collector:
+        type: string
+      cart_id:
+        type: integer
+        format: int32
+      general_order_id:
+        type: string
+        format: int64
+      order_view:
+        type: string
+        description: Пользовательское наименование заказа.
+      order_created_at:
+        type: string
+        format: int64
+        description: Дата публикации заказа.
+      closed_date:
+        type: string
+        format: int64
+        description: Дата закрытия заказа.
+      internal_status:
+        description: Внутренний статус системы управления заказами.
+        allOf:
+          - $ref: '#/definitions/msgOrderStatus'
+      shop_number_partner:
+        type: integer
+        format: int32
+        description: Идентификатор партнерского магазина.
+      version:
+        type: integer
+        format: int32
+        description: Версия созданного заказа.
+  customerorderOrderDetailsV1ResponseOrderLine:
+    type: object
+    properties:
+      product_id:
+        type: integer
+        format: int32
+      quantity:
+        type: number
+        format: double
+      manufacturer_id:
+        type: integer
+        format: int32
+      is_show:
+        type: boolean
+      price:
+        $ref: '#/definitions/customerorderOrderDetailsV1ResponseOrderLinePrice'
+      discount:
+        $ref: '#/definitions/customerorderOrderDetailsV1ResponseOrderLineDiscount'
+      is_weight_offer:
+        type: boolean
+        description: Признак весового товара.
+      is_green_price:
+        type: boolean
+        description: Признак зеленного ценника.
+  customerorderOrderDetailsV1ResponseOrderLineDiscount:
+    type: object
+    properties:
+      type_id:
+        type: integer
+        format: int32
+      priviledge_id:
+        type: integer
+        format: int32
+      percentage:
+        type: number
+        format: double
+      sum:
+        type: number
+        format: double
+  customerorderOrderDetailsV1ResponseOrderLinePrice:
+    type: object
+    properties:
+      final_price:
+        type: number
+        format: double
+      base_sum:
+        type: number
+        format: double
+      base_price:
+        type: number
+        format: double
+  customerorderOrderDetailsV1ResponsePayment:
+    type: object
+    properties:
+      pay_way:
+        type: integer
+        format: int32
+      tran_uid:
+        type: string
+      card:
+        $ref: '#/definitions/PaymentCard'
+      amounts:
+        $ref: '#/definitions/PaymentAmounts'
+  customerorderOrderTypeCancel:
+    type: string
+    enum:
+      - UNKNOWN_OrderTypeCancel
+      - partner
+    default: UNKNOWN_OrderTypeCancel
+    description: ' - partner: Заказ партнера.'
+  customerorderOrderWaterLines:
+    type: object
+    properties:
+      line_id:
+        type: string
+        title: Идентификатор заказа
+      product_id:
+        type: string
+        title: Идентификатор товара
+      quantity:
+        type: number
+        format: double
+        title: Количество
+      price:
+        type: number
+        format: double
+        description: Цена за шт.
+      base_sum:
+        type: number
+        format: double
+        title: Сумма по строке
+  customerorderOrdersListV1Response:
+    type: object
+    properties:
+      orders:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderOrdersResponse'
+        title: Массив получаемых ордеров
+  customerorderOrdersResponse:
+    type: object
+    properties:
+      order_id:
+        type: integer
+        format: int32
+        title: Идентификатор заказа
+      order_type:
+        type: integer
+        format: int32
+        title: тип заказа
+      status:
+        type: integer
+        format: int32
+        title: ID статуса заказа
+      status_at:
+        type: string
+        format: int64
+        title: Дата смены статуса
+      supply_date:
+        type: string
+        format: int64
+        title: Левая граница окна доставки
+      order_sum:
+        type: number
+        format: double
+        title: Сумма оплачено или сумма размещенного заказа (если еще не оплачено)
+      collected_sum:
+        type: number
+        format: double
+        title: Сумма собранного заказа
+      card_internal_id:
+        type: string
+        title: номер привязки карты оплаты
+      shop_address:
+        type: string
+        title: Адрес торговой точки
+      payment_status:
+        type: integer
+        format: int32
+        title: Статус оплаты
+      get_type_id:
+        type: integer
+        format: int32
+        title: Ключ службы доставки данного заказа. Справочник vv03.dbo.tt_delivery_service
+      delivery_address:
+        type: string
+        title: Адрес доставки
+      general_id:
+        type: string
+        title: Идентификатор генерального заказа
+      view_id:
+        type: string
+        title: Пользовательское отображение идентификатора заказа
+      creation_source_id:
+        type: integer
+        format: int32
+        title: источник
+      client_service_id:
+        type: integer
+        format: int32
+        title: ключ сервиса. Справочник vv03.dbo.tt_online_services
+      comment:
+        type: string
+        title: комментарий курьеру
+      is_private_home:
+        type: boolean
+        title: частный дом
+      another_person_name:
+        type: string
+        title: заказ получит другой человек, имя
+      another_person_phone:
+        type: string
+        title: заказ получит другой человек, телефон
+      doorphone:
+        type: string
+        title: домофон
+      entrance:
+        type: string
+        title: подъезд
+      floor:
+        type: string
+        title: этаж
+      flat:
+        type: string
+        title: номер квартиры
+      supply_until_date:
+        type: string
+        format: int64
+        title: Правая граница окна доставки в формате unix timestamp
+  customerorderOrdersWaterResponse:
+    type: object
+    properties:
+      order_id:
+        type: integer
+        format: int32
+        title: Идентификатор заказа
+      order_type:
+        type: integer
+        format: int32
+        title: тип заказа
+      status:
+        type: integer
+        format: int32
+        title: ID статуса заказа
+      status_at:
+        type: string
+        format: int64
+        title: Дата смены статуса
+      supply_date:
+        type: string
+        format: int64
+        title: Левая граница окна доставки
+      order_sum:
+        type: number
+        format: double
+        title: Сумма оплачено или сумма размещенного заказа (если еще не оплачено)
+      collected_sum:
+        type: number
+        format: double
+        title: Сумма собранного заказа
+      card_internal_id:
+        type: string
+        title: номер привязки карты оплаты
+      shop_address:
+        type: string
+        title: Адрес торговой точки
+      payment_status:
+        type: integer
+        format: int32
+        title: Статус оплаты
+      get_type_id:
+        type: integer
+        format: int32
+        title: Ключ службы доставки данного заказа. Справочник vv03.dbo.tt_delivery_service
+      delivery_address:
+        type: string
+        title: Адрес доставки
+      general_id:
+        type: string
+        title: Идентификатор генерального заказа
+      view_id:
+        type: string
+        title: Пользовательское отображение идентификатора заказа
+      creation_source_id:
+        type: integer
+        format: int32
+        title: источник
+      client_service_id:
+        type: integer
+        format: int32
+        title: ключ сервиса. Справочник vv03.dbo.tt_online_services
+      comment:
+        type: string
+        title: комментарий курьеру
+      is_private_home:
+        type: boolean
+        title: частный дом
+      another_person_name:
+        type: string
+        title: заказ получит другой человек, имя
+      another_person_phone:
+        type: string
+        title: заказ получит другой человек, телефон
+      doorphone:
+        type: string
+        title: домофон
+      entrance:
+        type: string
+        title: подъезд
+      floor:
+        type: string
+        title: этаж
+      flat:
+        type: string
+        title: номер квартиры
+      supply_until_date:
+        type: string
+        format: int64
+        title: Правая граница окна доставки в формате unix timestamp
+  customerorderRepeatPayV1Request:
+    type: object
+    properties:
+      order_id:
+        type: string
+      number:
+        type: string
+  customerorderWaterOrdersLinesV1Response:
+    type: object
+    properties:
+      order_id:
+        type: string
+        title: Идентификатор заказа
+      order_type:
+        type: integer
+        format: int32
+        title: Тип заказа
+      status:
+        type: integer
+        format: int32
+        title: ID статуса заказа
+      status_at:
+        type: string
+        format: int64
+        title: Дата смены статуса, unix timestamp
+      supply_date:
+        type: string
+        format: int64
+        title: Левая граница окна доставки, unix timestamp
+      supply_until_date:
+        type: string
+        format: int64
+        title: Правая граница окна доставки, unix timestamp
+      order_sum:
+        type: number
+        format: double
+        title: Сумма оплачено или сумма размещенного заказа (если еще не оплачено)
+      collected_sum:
+        type: number
+        format: double
+        title: Сумма собранного заказа
+      shop_address:
+        type: string
+        title: Адрес торговой точки
+      payment_status:
+        type: integer
+        format: int32
+        title: Статус оплаты
+      get_type_id:
+        type: integer
+        format: int32
+        title: Ключ службы доставки данного заказа. Справочник vv03.dbo.tt_delivery_service
+      card_internal_id:
+        type: integer
+        format: int32
+        title: Номер привязки карты оплаты
+      delivery_address:
+        type: string
+        title: Адрес доставки
+      general_id:
+        type: string
+        title: Идентификатор генерального заказа
+      view_id:
+        type: string
+        title: Пользовательское отображение идентификатора заказа
+      creation_source_id:
+        type: integer
+        format: int32
+        title: Источник
+      client_service_id:
+        type: integer
+        format: int32
+        title: Ключ сервиса. Справочник vv03.dbo.tt_online_services
+      order_lines:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/customerorderOrderWaterLines'
+        title: Линии заказа
+      comment:
+        type: string
+        title: Комментарий курьеру
+      is_private_home:
+        type: boolean
+        title: Частный дом
+      another_person_name:
+        type: string
+        title: Заказ получит другой человек, имя
+      another_person_phone:
+        type: string
+        format: int64
+        title: Заказ получит другой человек, телефон
+      doorphone:
+        type: string
+        title: Домофон
+      entrance:
+        type: string
+        title: Подъезд
+      floor:
+        type: string
+        title: Этаж
+      flat:
+        type: string
+        title: Номер квартиры
+  gatezillaCheckChangePossibleResponse:
+    type: object
+    properties:
+      change_pay_way:
+        type: integer
+        format: int32
+      code_message:
+        type: integer
+        format: int32
+      message:
+        type: string
+  hardcoreCreateWaterOrderV1Request:
+    type: object
+    properties:
+      loyalty_card_number:
+        type: string
+        title: Номер карты покупателя (старое название - card_number)
+      payment_card_id:
+        type: string
+        title: Внутренний идентификатор банковской карты клиента
+      shop_number:
+        type: string
+        format: int64
+        title: Номер магазина
+      partner_shop_number:
+        type: string
+        format: int64
+        title: Номер магазина партнёра
+      email:
+        type: string
+        title: Адрес электронной почты покупателя
+      app_name:
+        title: Источник создания заказа
+        allOf:
+          - $ref: '#/definitions/msgAppName'
+      comment:
+        type: string
+        title: Комментарий к заказу (считаем комментарием, относящимся к доставке)
+      ordered_items:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/hardcoreCreateWaterOrderV1RequestOrderedItems'
+        title: Позиции заказа
+      delivery_details:
+        title: Информация о доставке
+        allOf:
+          - $ref: '#/definitions/CreateWaterOrderV1RequestDeliveryDetails'
+  hardcoreCreateWaterOrderV1RequestOrderedItems:
+    type: object
+    properties:
+      product_id:
+        type: string
+        format: int64
+        title: Идентификатор товара
+      quantity:
+        type: string
+        format: int64
+        title: Количество товара
+      manufacturer_id:
+        type: string
+        format: int64
+        title: Производитель товара
+      price:
+        type: number
+        format: double
+        title: Цена на товар (по воде нет скидок, поэтому цена одна)
+  hardcoreCreateWaterOrderV1Response:
+    type: object
+    properties:
+      suborder_id:
+        type: string
+        format: int64
+        title: Номер созданного заказа
+  msgAppName:
+    type: string
+    enum:
+      - UNKNOWN_AppName
+      - tg_bot
+      - android_app
+      - ios_app
+      - miui_app
+      - huawei_app
+      - rustore_app
+      - website
+      - webcall
+      - yandex_food
+      - delivery_club
+      - sbermarket
+      - anonymous_web
+      - rules
+      - wildberries
+      - broniboy
+      - yandex_restaurant
+      - tinkoff
+      - yandex_food_vv_delivery
+      - mircity
+      - sbermarket_village
+      - foodlabs
+      - sbermarket_sgoryacha
+      - sbermarket_sgoryacha_vv_delivery
+      - vkusvillchik
+      - orders_admin_panel
+      - cj
+      - sbermarket_pickup
+      - phonecall
+      - igoods
+      - cancellation_autorefund
+      - obed_ru
+      - chibbis
+      - vkusvill_go
+      - vkusvill_cooks
+      - darkkitchen_retail
+      - foodcourt
+      - yandex_fruitcourt
+      - celebration_web
+      - ozon
+      - broniboy_vv_delivery
+      - micromarket
+    default: UNKNOWN_AppName
+    title: |-
+      - UNKNOWN_AppName: Неизвестное значение
+       - tg_bot: Телеграм-бот (на самом деле с этим источником летят заказы Рационов и Праздников с их собственных сайтов.. Платёжный перехимичил)
+       - android_app: Мобильное приложение, Android
+       - ios_app: Мобильное приложение, iOS
+       - miui_app: Мобильное приложения, MIUI (Xiaomi)
+       - huawei_app: Мобильное приложения, Huawei
+       - rustore_app: Мобильное приложение из Rustore
+       - website: Сайт ВВ
+       - webcall: Webcall (по факту используется только для возвратов)
+       - yandex_food: Яндекс Еда
+       - delivery_club: Delivery CLub
+       - sbermarket: Купер (ex. Сбермаркет)
+       - anonymous_web: Анонимные покупатели с сайта
+       - rules: Rules (источник возвратов)
+       - wildberries: Wildberries
+       - broniboy: Бронибой
+       - yandex_restaurant: Яндекс Рестораны
+       - tinkoff: Т-банк (ex. Тинькофф)
+       - yandex_food_vv_delivery: Яндекс Еда с нашей доставкой
+       - mircity: Мир Сити
+       - sbermarket_village: Сбермаркет Посёлки
+       - foodlabs: Фудлабс
+       - sbermarket_sgoryacha: Сбермаркет Сгоряча
+       - sbermarket_sgoryacha_vv_delivery: Сбермаркет Сгоряча с нашей доставкой
+       - vkusvillchik: Вкусвилльчик
+       - orders_admin_panel: Админка заказов (источник для довозов)
+       - cj: СиДжей
+       - sbermarket_pickup: Самовывоз Сбермаркет
+       - phonecall: Заказ через звонок на горячую линию
+       - igoods: Igoods
+       - cancellation_autorefund: Автовозврат отмены (источник для возврата)
+       - obed_ru: Обед.ру
+       - chibbis: Чиббис
+       - vkusvill_go: Вкусвилл Go
+       - vkusvill_cooks: Вкусвилл Готовит
+       - darkkitchen_retail: Дарккитчен
+       - foodcourt: Фудкорт
+       - yandex_fruitcourt: Яндекс Фруткорт
+       - celebration_web: Праздники Сайт
+       - ozon: Озон
+       - broniboy_vv_delivery: Бронибой с нашей доставкой
+       - micromarket: Микромаркет
+  msgCreateCertificateV1Request:
+    type: object
+    properties:
+      loyalty_card_number:
+        type: string
+        description: Номер карты лояльности.
+      payment_card_id:
+        type: string
+        title: Внутренний идентификатор банковской карты клиента
+      email:
+        type: string
+        title: Имейл
+      creation_source:
+        title: Источник
+        allOf:
+          - $ref: '#/definitions/msgSources'
+      bonuses:
+        type: number
+        format: double
+        title: Сумма бонусов
+      counted_offer:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/msgCreateCertificateV1RequestCountedOffer'
+        title: Позиции заказа
+  msgCreateCertificateV1RequestCountedOffer:
+    type: object
+    properties:
+      product_id:
+        type: string
+        title: Идентификатор товара
+      quantity:
+        type: string
+        format: int64
+        title: Количество единиц
+      price:
+        title: Объект с информацией о цене
+        allOf:
+          - $ref: '#/definitions/CreateCertificateV1RequestCountedOfferPrice'
+  msgCreateCertificateV1Response:
+    type: object
+    properties:
+      suborder_id:
+        type: string
+        title: Идентификатор заказа на сертификат
+  msgOrderStatus:
+    type: string
+    enum:
+      - UNKNOWN_OrderStatus
+      - ORDER_POSTED
+      - ORDER_CREATED
+      - ORDER_ACTIVATED
+      - ORDER_COLLECTED
+      - ORDER_COMPLETED
+      - ORDER_PAID
+      - ORDER_CANCELLED
+      - ORDER_IN_DELIVERY
+      - ORDER_READY_FOR_DELIVERY
+      - ORDER_UNFULFILLED
+      - ORDER_RETURNED_TO_SHELVES
+      - ORDER_RETURNED_TO_SHOP
+      - ORDER_IN_ASSEMBLY
+      - ORDER_PAYMENT_PROCESSING
+    default: UNKNOWN_OrderStatus
+    description: |-
+      OrderStatus список статусов заказа.
+
+       - ORDER_CREATED: Название статуса в монолите - "Оформлен", является первоначальным статусом заказа при создании, заказ остаётся в этом статусе после создания до начала его дальнейшей обработки.
+       - ORDER_COMPLETED: Название статуса в монолите - "Успешно завершен". Заказ успешно завершён.
+       - ORDER_PAID: Название статуса в монолите - "Оплачен", судя по всему, используется только в заказах Рационов. Означает, что по заказу была произведена оплата. Заказ Рациона находится в этом статусе до своего завершения.
+       - ORDER_CANCELLED: Название статуса в монолите - "Отменен", заказ переводится в этот статус в результате отмены. Является терминальным для заказа.
+       - ORDER_IN_DELIVERY: Название статуса в монолите - "Доставка", заказ находится в этом статусе в процессе доставки.
+       - ORDER_READY_FOR_DELIVERY: Название статуса в монолите - "Готов". Заказ находится в этом статусе после завершения сборки и оплаты, до начала доставки.
+       - ORDER_UNFULFILLED: Название статуса в монолите - "Не выполнен". Заказ не удалось доставить/завершить.
+       - ORDER_RETURNED_TO_SHELVES: Название статуса в монолите - "Вернулся на полки". Заказ вернулся на полки.
+       - ORDER_RETURNED_TO_SHOP: Название статуса в монолите - "Вернулся в магазин". Заказ вернулся на полки.
+       - ORDER_IN_ASSEMBLY: Название статуса в монолите - "Сборка", заказ находится в этом статусе в процессе сборки.
+       - ORDER_PAYMENT_PROCESSING: Название статуса в монолите - "В процессе оплаты", промежуточный статус между ORDER_CREATED и ORDER_PAID.
+  msgOrderType:
+    type: string
+    enum:
+      - UNKNOWN_OrderType
+      - certificate
+      - darkkitchen
+      - regular_order
+      - ration
+      - scan_yourself
+      - external_order
+      - celebration
+      - internal_order_with_delivery
+      - additional
+      - water
+      - delivery_for_external_service
+      - obed_ru_b2b
+    default: UNKNOWN_OrderType
+    description: |-
+      тип заказа.
+
+       - certificate: Заказ подарочных сертификатов ВВ
+       - darkkitchen: ЕСЛИ источник заказа (source) = darkkitchen, ТОГДА тип заказа darkkitchen
+       - regular_order: "Закажи и забери", самый обычный заказ Вкусвилла.
+       - ration: Рационы
+       - scan_yourself: Сканируй сам (Покупатель в магазине сам сканирует все товары через телефон и оплачивает на кассе)
+       - external_order: Заказ сторонней организации (Маркетплейсы)
+       - celebration: Праздники (Праздничные блюда)
+       - internal_order_with_delivery: ЕСЛИ источник заказа (source) != darkkitchen, ТОГДА тип заказа internal_order_with_delivery
+       - additional: Довозы (забыли положить часть товаров к основному заказу)
+       - water: Заказ воды (вода от партнёров)
+       - delivery_for_external_service: Доставка заказов сторонних организаций курьерской службой ВВ
+       - obed_ru_b2b: B2B заказы по Обед.ру
+  msgRefundTypes:
+    type: string
+    enum:
+      - UNKNOWN_RefundType
+      - refund_money
+      - refund_bonus
+    default: UNKNOWN_RefundType
+  msgSources:
+    type: string
+    enum:
+      - UNKNOWN_Source
+      - web
+      - mobile_app
+      - retail_admin
+      - _1c_crm_admin
+      - marketplace
+      - external_with_vv_delivery
+    default: UNKNOWN_Source
+    title: |-
+      - UNKNOWN_Source: Неизвестный источник
+       - web: Сайт
+       - mobile_app: Мобильное приложение ВВ (объединяет различные платформы)
+       - retail_admin: Админка розницы
+       - _1c_crm_admin: Админка 1С (crm доставки)
+       - marketplace: Маркетплейс (объединяет различные маркетплейсы)
+       - external_with_vv_delivery: Внешние заказы с нашей доставкой
+  ordercreationCountedOffer:
+    type: object
+    properties:
+      shopno:
+        type: integer
+        format: int64
+        description: Номер магазина.
+      partner_shopno:
+        type: integer
+        format: int64
+        description: Номер магазина партнера. Optional.
+      product_id:
+        type: integer
+        format: int64
+        description: ID товара.
+      quantity:
+        type: number
+        format: double
+        description: Количество.
+      manufacturer_id:
+        type: integer
+        format: int64
+        description: Производитель. Optional.
+      is_green_price:
+        type: boolean
+        description: |-
+          field was optional uint32 contract_type_id = 6, now removed.
+
+          Имеется ли Зеленный Ценник (Товар с подходящим сроком годности). Optional.
+      price:
+        description: Данные о цене товара.
+        allOf:
+          - $ref: '#/definitions/ordercreationPrice'
+      discount:
+        description: Данные о скидке на товар. Optional.
+        allOf:
+          - $ref: '#/definitions/ordercreationDiscount'
+      privilege_used:
+        type: integer
+        format: int32
+        description: Вариант применимости привилегии. Optional.
+      action_id:
+        type: integer
+        format: int64
+        description: ID действия по привилегии. Optional.
+      privilege_id:
+        type: integer
+        format: int64
+        description: ID привилегии. Optional.
+      cashback:
+        type: number
+        format: double
+        description: Кэшбек по товару. Optional.
+  ordercreationCoupon:
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID купона.
+      sum:
+        type: number
+        format: double
+        description: Сумма купона.
+  ordercreationCreateOrderV1Request:
+    type: object
+    properties:
+      cart_id:
+        type: integer
+        format: int32
+        description: ID корзины (ключ идемпотентности).
+      offers:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationOffer'
+      loyalty:
+        description: Данные о бонусах и купонах.
+        allOf:
+          - $ref: '#/definitions/ordercreationLoyalty'
+      payments:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationPayment'
+        description: Данные о платежах.
+      phone:
+        type: string
+        description: Телефон клиента. Optional.
+      email:
+        type: string
+        description: Email клиента. Optional.
+      order_sum:
+        type: number
+        format: double
+        description: Сумма размещенного заказа (со скидками без пакетов).
+      creation_source:
+        type: integer
+        format: int64
+        description: Источник создания заказа - Телеграм Бот, мобильное приложение, т.д.
+      delivery_params:
+        description: Параметры доставки.
+        allOf:
+          - $ref: '#/definitions/ordercreationDeliveryParams'
+      assembly_params:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationOMSParam'
+        description: Дополнительные параметры сборки. Optional.
+  ordercreationCreateOrderV1Response:
+    type: object
+    properties:
+      message:
+        type: string
+        description: При успешном создании поле будет пустое.
+      order:
+        description: При ошибке создании поле будет пустое.
+        allOf:
+          - $ref: '#/definitions/ordercreationOrderResult'
+  ordercreationCreateOrderV3Request:
+    type: object
+    properties:
+      cart_id:
+        type: string
+        format: int64
+        description: ID корзины (ключ идемпотентности).
+      ordered_items:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationCreateOrderV3RequestItem'
+      loyalty:
+        description: Данные о бонусах и купонах.
+        allOf:
+          - $ref: '#/definitions/ordercreationCreateOrderV3RequestLoyalty'
+      payments:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationCreateOrderV3RequestPayment'
+        description: Данные о платежах.
+      phone:
+        type: string
+        description: Телефон клиента. Optional.
+      email:
+        type: string
+        description: Email клиента. Optional.
+      order_sum:
+        type: number
+        format: double
+        description: Сумма размещенного заказа (со скидками без пакетов).
+      app_name:
+        description: Источник создания заказа (старое название - source).
+        allOf:
+          - $ref: '#/definitions/msgAppName'
+      delivery_params:
+        description: Параметры доставки.
+        allOf:
+          - $ref: '#/definitions/ordercreationCreateOrderV3RequestDeliveryParams'
+      assembly_params:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationCreateOrderV3RequestOMSParam'
+        description: Дополнительные параметры сборки. Optional.
+      loyalty_card_number_property:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationCreateOrderV3RequestLoyaltyCardNumberProperty'
+  ordercreationCreateOrderV3RequestDeliveryParams:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        format: int64
+        description: Левая граница окна доставки (UNIX, UTC, seconds).
+      supply_until_date:
+        type: string
+        format: int64
+        description: Правая граница окна доставки (UNIX, UTC, seconds).
+      delivery_target:
+        description: Адрес доставки (для заказов с доставкой).
+        allOf:
+          - $ref: '#/definitions/CreateOrderV3RequestDeliveryParamsDeliveryTarget'
+      is_pickup_order:
+        type: boolean
+        description: Признак самовывоза.
+      delivery_sum:
+        type: number
+        format: double
+        description: Стоимость Экспресс-доставки на данный момент, базовая стоимость доставки в будущем. Optional.
+      privileged_delivery_sum:
+        type: number
+        format: double
+        description: Cтоимость доставки по привилегии.
+      client_service_id:
+        type: string
+        format: int64
+        description: Тип доставки (за 3 часа, etc). Для самовывоза указывать 0.
+      get_type_id:
+        type: string
+        format: int64
+        description: ID выбранной службы доставки (в будущем deprecated). Для самовывоза указывать 0.
+      another_person_phone:
+        type: string
+        description: Телефон близкого (при заказе другому человеку). Optional.
+      another_person_name:
+        type: string
+        description: Имя близкого (при заказе другому человеку). Optional.
+      has_partner_delivery:
+        type: boolean
+        description: Флаг наличия партнерской доставки.
+      get_type_extend:
+        type: string
+        format: int64
+        description: Тип дополнительной службы доставки.
+      other:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationCreateOrderV3RequestOMSParam'
+        description: Дополнительные параметры доставки.
+      shop_number:
+        type: string
+        format: int64
+        description: Основная торговая точка.
+      seller_id:
+        type: integer
+        format: int32
+        description: Уникальный идентификатор поставщика.
+  ordercreationCreateOrderV3RequestItem:
+    type: object
+    properties:
+      shop_number:
+        type: string
+        format: int64
+        description: Номер магазина.
+      partner_shop_number:
+        type: string
+        format: int64
+        description: Номер магазина партнера. Optional.
+      product_id:
+        type: string
+        format: int64
+        description: ID товара.
+      quantity:
+        type: number
+        format: double
+        description: Количество.
+      manufacturer_id:
+        type: string
+        format: int64
+        description: Производитель. Optional.
+      is_green_price:
+        type: boolean
+        description: Имеется ли Зеленный Ценник (Товар с подходящим сроком годности). Optional.
+      price:
+        description: Данные о цене товара.
+        allOf:
+          - $ref: '#/definitions/CreateOrderV3RequestItemPrice'
+      discount:
+        description: Данные о скидке на товар. Optional.
+        allOf:
+          - $ref: '#/definitions/CreateOrderV3RequestItemDiscount'
+      privilege_used:
+        type: string
+        format: int64
+        description: Вариант применимости привилегии. Optional.
+      action_id:
+        type: string
+        format: int64
+        description: ID действия по привилегии. Optional.
+      privilege_id:
+        type: string
+        format: int64
+        description: ID привилегии. Optional.
+      cashback:
+        type: number
+        format: double
+        description: Кэшбек по товару. Optional.
+  ordercreationCreateOrderV3RequestLoyalty:
+    type: object
+    properties:
+      card_number:
+        type: string
+        description: Номер карты лояльности.
+      coupon:
+        description: Данные о купоне. Optional.
+        allOf:
+          - $ref: '#/definitions/CreateOrderV3RequestLoyaltyCoupon'
+      bonuses_amount:
+        type: number
+        format: double
+        description: Бонусы для начисления за этот товар. Optional.
+      sberspasibo_bonuses_amount:
+        type: number
+        format: double
+        description: Бонусы СберСпасибо для начисления за этот товар. Optional.
+      gift_card_amount:
+        type: number
+        format: double
+        description: Сумма списания с подарочной карты.
+  ordercreationCreateOrderV3RequestLoyaltyCardNumberProperty:
+    type: object
+    properties:
+      property_name:
+        type: string
+      value:
+        type: string
+        format: int64
+      parent_id:
+        type: string
+        format: int64
+  ordercreationCreateOrderV3RequestOMSParam:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+  ordercreationCreateOrderV3RequestPayment:
+    type: object
+    properties:
+      pay_way:
+        type: string
+        format: int64
+        description: Тип оплаты.
+      amount:
+        type: number
+        format: double
+        description: Сумма оплаты.
+      card_internal_id:
+        type: string
+        description: Внутренний идентификатор банковской карты клиента.
+      card_pan:
+        type: string
+        description: PAN банковской карты клиента.
+      sum_for_exchange:
+        type: number
+        format: double
+        description: Сумма, с которой нужна сдача. Optional.
+  ordercreationCreateOrderV3Response:
+    type: object
+    properties:
+      order:
+        description: При ошибке создании поле будет пустое.
+        allOf:
+          - $ref: '#/definitions/ordercreationCreateOrderV3ResponseOrderResult'
+  ordercreationCreateOrderV3ResponseOrderResult:
+    type: object
+    properties:
+      general_order_id:
+        type: string
+        title: Идентификатор генерального заказа
+      suborders:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationCreateOrderV3ResponseSuborder'
+        description: Массив подзаказов.
+      created_status:
+        $ref: '#/definitions/ordercreationCreatedStatus'
+  ordercreationCreateOrderV3ResponseSuborder:
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID подзаказа.
+      view_id:
+        type: string
+        description: ID подзаказа (отображение для пользователя).
+      type:
+        description: Тип подзаказа.
+        allOf:
+          - $ref: '#/definitions/msgOrderType'
+      partner_type_id:
+        type: string
+        format: int64
+        description: ID типа партнера.
+  ordercreationCreatedStatus:
+    type: string
+    enum:
+      - UNKNOWN_CreatedStatus
+      - CREATED
+      - ALREADY_CREATED
+    default: UNKNOWN_CreatedStatus
+  ordercreationDeliveryParams:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        description: Левая граница окна доставки.
+      supply_until_date:
+        type: string
+        description: Правая граница окна доставки.
+      delivery_target:
+        $ref: '#/definitions/ordercreationDeliveryTarget'
+      pickup_target:
+        $ref: '#/definitions/ordercreationPickupTarget'
+      delivery_sum:
+        type: number
+        format: double
+        description: Стоимость Экспресс-доставки на данный момент, базовая стоимость доставки в будущем. Optional.
+      privileged_delivery_sum:
+        type: number
+        format: double
+        description: Cтоимость доставки по привилегии.
+      client_service_id:
+        type: integer
+        format: int64
+        description: Тип доставки (за 3 часа, etc). Для самовывоза указывать 0.
+      get_type_id:
+        type: integer
+        format: int64
+        description: ID выбранной службы доставки (в будущем deprecated). Для самовывоза указывать 0.
+      another_person_phone:
+        type: string
+        description: Телефон близкого (при заказе другому человеку). Optional.
+      another_person_name:
+        type: string
+        description: Имя близкого (при заказе другому человеку). Optional.
+      has_partner_delivery:
+        type: boolean
+        description: Флаг наличия партнерской доставки.
+      get_type_extend:
+        type: integer
+        format: int64
+        description: Тип дополнительной службы доставки.
+      other:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationOMSParam'
+        description: Дополнительные параметры доставки.
+      shop_number:
+        type: integer
+        format: int32
+        description: Основная торговая точка.
+      seller_id:
+        type: integer
+        format: int32
+        description: Уникальный идентификатор поставщика.
+  ordercreationDeliveryTarget:
+    type: object
+    properties:
+      full_address:
+        type: string
+        description: Полный адрес дома. Required.
+      latitude:
+        type: number
+        format: double
+        description: Широта. Обязательно к заполнению.
+      longitude:
+        type: number
+        format: double
+        description: Долгота. Обязательно к заполнению.
+      country:
+        type: string
+        description: Страна. Optional.
+      province1:
+        type: string
+        description: Область. Optional.
+      province2:
+        type: string
+        description: Область. Optional.
+      area:
+        type: string
+        description: Городской Округ. Optional.
+      locality:
+        type: string
+        description: Местность. Optional.
+      district1:
+        type: string
+        description: Административный округ. Optional.
+      district2:
+        type: string
+        description: Район. Optional.
+      street:
+        type: string
+        description: Улица. Optional.
+      house:
+        type: string
+        description: Дом. Optional.
+      flat:
+        type: string
+        description: Квартира. Optional.
+      doorphone:
+        type: string
+        description: Домофон. Optional.
+      entrance:
+        type: string
+        description: Вход/подъезд. Optional.
+      floor:
+        type: string
+        description: Этаж. Optional.
+      location_input_type:
+        type: integer
+        format: int32
+        description: Признак доставки без дома (принимает разные значения). Required.
+      is_private_home:
+        type: boolean
+        description: Флаг частный дом. Required.
+      customer_address_id:
+        type: string
+        format: int64
+        description: идентификатор адреса пользователя. Optional.
+      json_address:
+        type: string
+        description: сериализованный адрес. Optional.
+      address_comment:
+        type: string
+        description: Комментарий к доставке. Optional.
+  ordercreationDiscount:
+    type: object
+    properties:
+      type_id:
+        type: integer
+        format: int64
+        description: ID типа скидки.
+      percentage:
+        type: integer
+        format: int64
+        description: '% скидки на чек по акции Разнообразное Питание.'
+      sum:
+        type: number
+        format: double
+        description: Сумма скидки без скидки на чек.
+      value:
+        type: number
+        format: double
+        description: Значение скидки.
+  ordercreationLoyalty:
+    type: object
+    properties:
+      card_number:
+        type: string
+        description: Номер карты лояльности.
+      coupon:
+        description: Данные о купоне. Optional.
+        allOf:
+          - $ref: '#/definitions/ordercreationCoupon'
+      bonuses:
+        type: number
+        format: double
+        description: Бонусы для начисления за этот товар. Optional.
+      sberspasibo_bonuses:
+        type: number
+        format: double
+        description: Бонусы СберСпасибо для начисления за этот товар. Optional.
+      gift_card_amount:
+        type: number
+        format: double
+        description: Сумма списания с подарочной карты.
+  ordercreationOMSParam:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+  ordercreationOffer:
+    type: object
+    properties:
+      counted_offer:
+        $ref: '#/definitions/ordercreationCountedOffer'
+      weight_offer:
+        $ref: '#/definitions/ordercreationWeightOffer'
+  ordercreationOrder:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: ID части генерального заказа.
+      view_id:
+        type: string
+        description: ID части генерального заказа.
+      type_id:
+        type: integer
+        format: int64
+        description: ID типа составного заказа.
+      partner_type_id:
+        type: integer
+        format: int64
+        description: ID типа партнера.
+  ordercreationOrderResult:
+    type: object
+    properties:
+      general_order_id:
+        type: integer
+        format: int32
+      orders:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/ordercreationOrder'
+      created_status:
+        $ref: '#/definitions/ordercreationCreatedStatus'
+  ordercreationPayment:
+    type: object
+    properties:
+      pay_way:
+        type: integer
+        format: int64
+        description: Тип оплаты.
+      amount:
+        type: number
+        format: double
+        description: Сумма оплаты.
+      card_internal_id:
+        type: integer
+        format: int32
+        description: Внутренний идентификатор банковской карты клиента.
+      card_pan:
+        type: string
+        description: PAN банковской карты клиента.
+      sum_for_exchange:
+        type: number
+        format: double
+        description: Сумма, с которой нужна сдача. Optional.
+  ordercreationPickupTarget:
+    type: object
+  ordercreationPrice:
+    type: object
+    properties:
+      final_price:
+        type: number
+        format: double
+        description: Стоимость cо скидкой.
+      base_price:
+        type: number
+        format: double
+        description: Стоимость без скидки.
+      base_sum:
+        type: number
+        format: double
+        description: Сумма без скидки.
+  ordercreationWeightOffer:
+    type: object
+    properties:
+      shopno:
+        type: integer
+        format: int64
+        description: Номер магазина.
+      partner_shopno:
+        type: integer
+        format: int64
+        description: Номер магазина партнера. Optional.
+      product_id:
+        type: integer
+        format: int64
+        description: ID товара.
+      weight:
+        type: number
+        format: double
+        description: Вес товара в граммах.
+      manufacturer_id:
+        type: integer
+        format: int64
+        description: Производитель. Optional.
+      is_green_price:
+        type: boolean
+        description: |-
+          field was optional uint32 contract_type_id = 6, now removed.
+
+          Имеется ли Зеленный Ценник (Товар с подходящим сроком годности). Optional.
+      price:
+        description: Данные о цене товара.
+        allOf:
+          - $ref: '#/definitions/ordercreationPrice'
+      discount:
+        description: Данные о скидке на товар. Optional.
+        allOf:
+          - $ref: '#/definitions/ordercreationDiscount'
+      privilege_used:
+        type: integer
+        format: int32
+        description: Вариант применимости привилегии. Optional.
+      action_id:
+        type: integer
+        format: int64
+        description: ID действия по привилегии. Optional.
+      privilege_id:
+        type: integer
+        format: int64
+        description: ID привилегии. Optional.
+      cashback:
+        type: number
+        format: double
+        description: Кэшбек по товару. Optional.
+  parcelsCourierInfo:
+    type: object
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+      car_maker:
+        type: string
+      car_model:
+        type: string
+      car_color:
+        type: string
+      car_number:
+        type: string
+      return_reason_id:
+        type: integer
+        format: int32
+  parcelsGetCourierInfoV1Response:
+    type: object
+    properties:
+      order_id:
+        type: integer
+        format: int32
+      parcel_id:
+        type: integer
+        format: int32
+      courier_info:
+        $ref: '#/definitions/parcelsCourierInfo'
+  softcoreFailureIDs:
+    type: object
+    properties:
+      failure_id:
+        type: integer
+        format: int32
+  softcoreGetOrderCollectedV1Response:
+    type: object
+    properties:
+      line_id:
+        type: string
+        title: идентификатор позиции
+      product_id:
+        type: string
+        title: идентификатор товара (id_tov)
+      manufacturer_id:
+        type: string
+        description: идентификатор производителя (id_kontr).
+      unit:
+        type: integer
+        format: int32
+        title: ед. измерения
+      quantity:
+        type: number
+        format: double
+        title: количество
+      price:
+        type: number
+        format: double
+        title: цена
+      sum:
+        type: number
+        format: double
+        title: сумма
+      barcode:
+        type: string
+        title: штрихкод
+      is_green_price:
+        type: boolean
+        title: зеленый ценник
+      quantity_ordered:
+        type: number
+        format: double
+        title: количество в базовых единицах (кг/шт) (актуально для Экспресс)
+      contract_type_id:
+        type: string
+        title: признак типа продажи (агентская/не агентская)
+      privilege_id:
+        type: integer
+        format: int32
+        title: идентификатор привилегии
+      action_id:
+        type: integer
+        format: int32
+        title: идентификатор действия по привилегии
+      warehouse:
+        type: integer
+        format: int32
+        title: торговая точка остатков
+      discount_type:
+        type: integer
+        format: int32
+        title: тип скидки
+      discount_percentage:
+        type: integer
+        format: int32
+        title: процент скидки
+      base_price:
+        type: number
+        format: double
+        title: цена товара без скидок
+      discount_value:
+        type: number
+        format: double
+        title: значение скидки
+      price_ordered:
+        type: number
+        format: double
+        title: цена заказанной позиции
+  softcoreOrderEditCommitV1Request:
+    type: object
+    properties:
+      suborder_id:
+        type: string
+        title: Идентификатор заказа
+      comment:
+        type: string
+        title: Комментарий сборщику
+      cutlery:
+        type: integer
+        format: int32
+        title: Количество столовых приборов
+      products:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/OrderEditCommitV1RequestProduct'
+        title: Массив объектов с информацией о товарах в заказе
+      bonuses_vkusvill_amount:
+        type: string
+        format: int64
+        title: Бонусы ВВ(Доумноженное на 100)
+  softcoreOrderEditV1Request:
+    type: object
+    properties:
+      suborder_id:
+        type: string
+        title: Идентификатор заказа
+      order_edit:
+        type: boolean
+        title: Признак редактирования заказа
+  softcoreOrderEditV1Response:
+    type: object
+    properties:
+      message:
+        type: string
+        title: Бизнес-сообщение
+      should_supply_at:
+        type: string
+        format: int64
+        title: Новое время левой границы слота
+      should_supply_until:
+        type: string
+        format: int64
+        title: Новое время правой границы слота
+      edit_deadline:
+        type: string
+        format: int64
+        title: Дедлайн редактирования заказа
+  softcorePaymentV1Request:
+    type: object
+    properties:
+      suborder_id:
+        type: string
+        title: ID заказа, в составе генерального заказа
+      payment_card_id:
+        type: string
+        title: Карточка клиента
+  softcorePaymentV1Response:
+    type: object
+    properties:
+      result:
+        type: integer
+        format: int32
+      message:
+        type: string
+      failure_ids:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/softcoreFailureIDs'
+  softcoreVerifyAssemblyLinesDiff:
+    type: object
+    properties:
+      product_id:
+        type: string
+        title: Идентификатор товара
+      quantity:
+        type: number
+        format: double
+        title: Количество товара в заказе
+      collected:
+        type: number
+        format: double
+        title: Собранное количество товара
+      reason:
+        type: integer
+        format: int32
+        title: Причина изменения количества товара (код причины)
+  softcoreVerifyAssemblyOrderLine:
+    type: object
+    properties:
+      product_id:
+        type: string
+        title: Идентификатор товара
+      barcode:
+        type: string
+        title: Штрих-код товара
+      manufacturer_id:
+        type: string
+        title: Идентификатор производителя товара
+      quantity:
+        type: number
+        format: double
+        title: Количество товара
+      is_green_price:
+        type: boolean
+        title: Признак зелёного ценника
+      warehouse:
+        type: integer
+        format: int32
+        title: Номер ПСЕ
+      new_price:
+        type: number
+        format: double
+        title: Цена на товар от партнёра
+  softcoreVerifyAssemblyPackage:
+    type: object
+    properties:
+      package_id:
+        type: string
+        title: Идентификатор пакета
+      group_cell_id:
+        type: string
+        title: Идентификатор ячейки пакета
+  softcoreVerifyAssemblyTovDM:
+    type: object
+    properties:
+      product_id:
+        type: string
+        title: Идентификатор товара
+      barcode:
+        type: string
+        title: Штрих-код товара
+      is_green_price:
+        type: boolean
+        title: Признак зелёного ценника
+      marking_data_matrix:
+        type: string
+        title: Честный знак в формате datamatrix
+  softcoreVerifyAssemblyV1Request:
+    type: object
+    properties:
+      suborder_id:
+        type: string
+        title: Идентификатор заказа
+      is_need_to_pay:
+        type: boolean
+        title: Флаг необходимости дальнейшего движения по заказу
+      shop_number:
+        type: integer
+        format: int32
+        title: Номер магазина
+      picker_id:
+        type: string
+        title: Идентификатор сборщика
+      device_id:
+        type: string
+        title: Идентификатор ТСД (устройства, на котором происходила сборка)
+      app_version:
+        type: string
+        title: Версия приложения сборки
+      sheet_id:
+        type: string
+        title: Идентификатор сборочного листа
+      order_lines:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/softcoreVerifyAssemblyOrderLine'
+        title: Массив объектов, содержащих информацию о собранных товарах
+      tov_dm:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/softcoreVerifyAssemblyTovDM'
+        title: Массив объектов с информацией о честных знаках товаров (Marking Data Matrix)
+      lines_diff:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/softcoreVerifyAssemblyLinesDiff'
+        description: Массив объектов с информацией о товарах, у которых собранное количество отличается от изначально заказанного. Эти товары передаются и в основном массиве order_lines, и в массиве lines_diff.
+      packages:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/softcoreVerifyAssemblyPackage'
+        title: 'Массив объектов с информацией о пакетах (один заказ может быть доставлен в нескольких пакетах, например, чтобы соблюдать температурный режим: горячее отдельно, заморозка отдельно, или чтобы отделить бытовую химию от пищевых продуктов и т.д.)'
+      is_partner_assembly:
+        type: boolean
+        title: Признак сборки на стороне партнёра
+      is_repeat_pay:
+        type: boolean
+        title: Флаг повтора оплаты
+  softcoreVerifyAssemblyV1Response:
+    type: object
+    properties:
+      verification_result:
+        type: integer
+        format: int32
+        title: Результат верификации сборки
+      verification_message:
+        type: string
+        title: Сообщение о результате верификации сборки (в случае ошибки)
+  waterCountedOfferV2:
+    type: object
+    properties:
+      shopno:
+        type: string
+        format: int64
+        title: Номер магазина
+      partner_shopno:
+        type: string
+        format: int64
+        title: Номер магазина партнера
+      product_id:
+        type: string
+        format: int64
+        title: ID товара
+      quantity:
+        type: number
+        format: double
+        title: Количество для не весовых
+      manufacturer_id:
+        type: string
+        format: int64
+        title: Производитель
+      contract_type_id:
+        type: string
+        format: int64
+        title: ИД типа договора для партнеров
+      price:
+        type: number
+        format: double
+        title: Стоимость товара
+  waterDeliveryParamsV2:
+    type: object
+    properties:
+      supply_date:
+        type: string
+        format: int64
+        title: Левая граница окна доставки
+      supply_until_date:
+        type: string
+        format: int64
+        title: Правая граница окна доставки
+      another_person_phone:
+        type: string
+        title: Телефон близкого (при заказе другому человеку)
+      another_person_name:
+        type: string
+        title: Имя близкого (при заказе другому человеку)
+      delivery_target:
+        title: Данные доставки
+        allOf:
+          - $ref: '#/definitions/waterDeliveryTargetV2'
+  waterDeliveryTargetV2:
+    type: object
+    properties:
+      customer_address_id:
+        type: string
+        format: int64
+        title: ID сохраненного адреса
+      full_address:
+        type: string
+        title: Полный адрес дома
+      latitude:
+        type: number
+        format: double
+        title: Широта
+      longitude:
+        type: number
+        format: double
+        title: Долгота
+      country:
+        type: string
+        title: Страна
+      province1:
+        type: string
+        title: Область
+      province2:
+        type: string
+        title: Область
+      area:
+        type: string
+        title: Городской округ
+      locality:
+        type: string
+        title: Местность
+      district1:
+        type: string
+        title: Административный округ
+      district2:
+        type: string
+        title: Район
+      street:
+        type: string
+        title: Улица
+      house:
+        type: string
+        title: Дом
+      flat:
+        type: string
+        title: Квартира
+      doorphone:
+        type: string
+        title: Домофон
+      entrance:
+        type: string
+        title: Вход/подъезд
+      floor:
+        type: string
+        title: Этаж
+      is_private_home:
+        type: boolean
+        title: Флаг частный дом
+  waterOfferV2:
+    type: object
+    properties:
+      counted_offer:
+        title: Товары не весовые
+        allOf:
+          - $ref: '#/definitions/waterCountedOfferV2'
+      weight_offer:
+        title: Товары весовые
+        allOf:
+          - $ref: '#/definitions/waterWeightOfferV2'
+  waterOrderWaterV2Request:
+    type: object
+    properties:
+      offers:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/waterOfferV2'
+        title: Список товаров
+      card_number:
+        type: string
+        title: Номер карты лояльности
+      card_internal_id:
+        type: string
+        format: int64
+        title: Внутренний идентификатор банковской карты клиента
+      email:
+        type: string
+        title: Email клиента
+      creation_source:
+        type: string
+        format: int64
+        title: Источник создания заказа (ид откуда создан заказ)
+      comment:
+        type: string
+        title: Комментарий к заказу
+      delivery_params:
+        title: Параметры доставки (сервис, адрес и т.д.)
+        allOf:
+          - $ref: '#/definitions/waterDeliveryParamsV2'
+  waterOrderWaterV2Response:
+    type: object
+    properties:
+      general_order_id:
+        type: integer
+        format: int32
+        title: ID генерального заказа
+      id:
+        type: integer
+        format: int32
+        title: ID части генерального заказа
+      view_id:
+        type: string
+        title: Пользовательское отображение
+      type_id:
+        type: integer
+        format: int32
+        title: Тип заказа
+      partner_type_id:
+        type: integer
+        format: int32
+        title: ID типа партнера
+  waterWeightOfferV2:
+    type: object
+    properties:
+      shopno:
+        type: string
+        format: int64
+        title: Номер магазина
+      partner_shopno:
+        type: string
+        format: int64
+        title: Номер магазина партнера
+      product_id:
+        type: string
+        format: int64
+        title: ID товара
+      weight:
+        type: number
+        format: double
+        title: Вес для весовых
+      manufacturer_id:
+        type: string
+        format: int64
+        title: Производитель
+      contract_type_id:
+        type: string
+        format: int64
+        title: ИД типа договора для партнеров
+      price:
+        type: number
+        format: double
+        title: Стоимость товара
+  customerorderAdminStatusV1:
+    type: object
+  customerorderChangePhone:
+    type: object
+  customerorderChangeSlotV2:
+    type: object
+    properties:
+      message:
+        type: string
+  customerorderCheckChangeSlotV1:
+    type: object
+  customerorderCreateOrUpdateAssemblyCellsV2Response:
+    type: object
+  customerorderLockDeliveryV2:
+    type: object
+    properties:
+      message:
+        type: string
+  customerorderMarketPlaceFinalStatusV1:
+    type: object
+  ordercreationCreateOrderV2Response:
+    type: object
+    properties:
+      message:
+        type: string
+        description: При успешном создании поле будет пустое.
+      order:
+        description: При ошибке создании поле будет пустое.
+        allOf:
+          - $ref: '#/definitions/ordercreationOrderResult'
+  softcoreAssemblyPrepareV1Response:
+    type: object
+    properties:
+      verification_result:
+        type: integer
+        format: int32
+        title: Результат верификации сборки
+      verification_message:
+        type: string
+        title: Сообщение о результате верификации сборки (в случае ошибки)
+  softcoreOrderEditCommitV1Response:
+    type: object
